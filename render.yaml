@@ -1,0 +1,40 @@
+services:
+  - type: web
+    name: mavunoroute-backend
+    runtime: image
+    repo: https://github.com/elonmasai7/MavunoRoute.git
+    plan: starter
+    dockerfilePath: ./backend/Dockerfile
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_SECRET_KEY
+        generateValue: true
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: JWT_ACCESS_TOKEN_EXPIRE_MINUTES
+        value: 30
+      - key: JWT_REFRESH_TOKEN_EXPIRE_DAYS
+        value: 14
+      - key: DATABASE_URL
+        fromDatabase:
+          name: mavunoroute-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: mavunoroute-redis
+          property: connectionString
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://mavunoroute-backend.onrender.com
+
+databases:
+  - name: mavunoroute-db
+    plan: starter
+    databaseName: mavunoroute
+    postgresMajorVersion: 16
+
+redis:
+  - name: mavunoroute-redis
+    plan: starter
+    maxmemoryPolicy: noeviction

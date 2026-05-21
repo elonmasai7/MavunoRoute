@@ -34,7 +34,7 @@ if (loginForm) {
       localStorage.setItem("mavuno_refresh_token", data.refresh_token);
       setCookie("mavuno_access_token", data.access_token, 1);
       setCookie("mavuno_refresh_token", data.refresh_token, 14);
-      message.innerHTML = 'Login successful. <a href="/dashboard">Go to dashboard</a>.';
+      window.location.href = "/dashboard";
     } catch (err) {
       message.textContent = err.message;
     }
@@ -52,7 +52,7 @@ if (registerForm) {
 
     try {
       await postJSON(`${API_BASE}/register`, payload);
-      message.textContent = "Registration successful. You can now log in.";
+      message.innerHTML = 'Registration successful. <a href="/login">Log in now</a>.';
     } catch (err) {
       message.textContent = err.message;
     }
