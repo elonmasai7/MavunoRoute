@@ -1,0 +1,65 @@
+from enum import StrEnum
+
+
+class UserRole(StrEnum):
+    SUPER_ADMIN = "SUPER_ADMIN"
+    OPS_ADMIN = "OPS_ADMIN"
+    COOPERATIVE_ADMIN = "COOPERATIVE_ADMIN"
+    FARMER = "FARMER"
+    TRANSPORTER = "TRANSPORTER"
+    BUYER = "BUYER"
+    COLD_HUB_OPERATOR = "COLD_HUB_OPERATOR"
+    FINANCE_PARTNER = "FINANCE_PARTNER"
+
+
+class VerificationStatus(StrEnum):
+    PENDING = "PENDING"
+    VERIFIED = "VERIFIED"
+    REJECTED = "REJECTED"
+
+
+class HarvestBatchStatus(StrEnum):
+    DRAFT = "DRAFT"
+    READY = "READY"
+    MATCHED = "MATCHED"
+    PICKUP_ASSIGNED = "PICKUP_ASSIGNED"
+    IN_TRANSIT = "IN_TRANSIT"
+    DELIVERED = "DELIVERED"
+    CANCELLED = "CANCELLED"
+
+
+class BuyerDemandStatus(StrEnum):
+    OPEN = "OPEN"
+    PARTIALLY_FULFILLED = "PARTIALLY_FULFILLED"
+    FULFILLED = "FULFILLED"
+    CANCELLED = "CANCELLED"
+
+
+class RouteStatus(StrEnum):
+    PLANNED = "PLANNED"
+    ACTIVE = "ACTIVE"
+    COMPLETED = "COMPLETED"
+    CANCELLED = "CANCELLED"
+
+
+class PickupStatus(StrEnum):
+    PENDING = "PENDING"
+    ACCEPTED = "ACCEPTED"
+    PICKED = "PICKED"
+    REJECTED = "REJECTED"
+    CANCELLED = "CANCELLED"
+
+
+class DeliveryStatus(StrEnum):
+    PENDING = "PENDING"
+    IN_TRANSIT = "IN_TRANSIT"
+    DELIVERED = "DELIVERED"
+    CANCELLED = "CANCELLED"
+
+
+class PaymentStatus(StrEnum):
+    PENDING = "PENDING"
+    PROCESSING = "PROCESSING"
+    PAID = "PAID"
+    FAILED = "FAILED"
+    CANCELLED = "CANCELLED"

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <h1>Operations Dashboard</h1>
+  <p>Live metrics from `/api/v1/reports/dashboard`.</p>
+  <div class="cta-row">
+    <button id="refresh-dashboard" class="btn primary" type="button">Refresh Metrics</button>
+  </div>
+</section>
+
+<section class="card" style="margin-top: 1rem;">
+  <h2>Platform Metrics</h2>
+  <div id="dashboard-status" class="form-message">Click refresh to load metrics.</div>
+  <table class="metrics-table" id="dashboard-table" hidden>
+    <tbody></tbody>
+  </table>
+</section>
+
+<script src="/static/js/app.js"></script>
+{% endblock %}
