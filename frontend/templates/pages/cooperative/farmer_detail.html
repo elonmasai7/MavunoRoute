@@ -1,0 +1,22 @@
+{% extends "layouts/cooperative.html" %}
+{% block title %}Farmer Detail - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header"><h2>Farmer {{ farmer_id }}</h2></div>
+  <div class="detail-grid"><div class="detail-section"><h3>Details</h3><div id="farmer-detail"><p class="text-muted">Loading...</p></div></div></div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var f = await apiRequest("/api/v1/farmers/{{ farmer_id }}");
+    var html = '<div class="detail-row"><span class="detail-label">Name</span><span class="detail-value">'+(f.full_name||'-')+'</span></div>' +
+      '<div class="detail-row"><span class="detail-label">Phone</span><span class="detail-value">'+(f.phone_number||'-')+'</span></div>' +
+      '<div class="detail-row"><span class="detail-label">Email</span><span class="detail-value">'+(f.email||'-')+'</span></div>' +
+      '<div class="detail-row"><span class="detail-label">Status</span><span class="detail-value"><span class="badge badge-'+(f.is_active?'success':'danger')+'">'+(f.is_active?'ACTIVE':'INACTIVE')+'</span></span></div>';
+    document.getElementById("farmer-detail").innerHTML = html;
+  } catch(e) {
+    document.getElementById("farmer-detail").innerHTML = '<p class="text-danger">Error loading farmer.</p>';
+  }
+});
+</script>
+{% endblock %}

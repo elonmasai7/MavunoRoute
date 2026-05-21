@@ -1,0 +1,15 @@
+{% extends "layouts/transporter.html" %}
+{% block title %}Add Vehicle - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="form-card">
+  <h2>Add Vehicle</h2>
+  <form id="vehicle-form">
+    <label>Registration Number <input type="text" name="registration_number" required placeholder="e.g. KCA 123T"></label>
+    <label>Vehicle Type <select name="vehicle_type" required><option value="TRUCK">Truck</option><option value="VAN">Van</option><option value="PICKUP">Pickup</option><option value="MINIVAN">Minivan</option></select></label>
+    <label>Capacity (kg) <input type="number" name="capacity_kg" min="1" step="0.1" required></label>
+    <p class="form-message" id="vehicle-message"></p>
+    <div class="form-actions"><button type="submit" class="btn btn-primary">Add Vehicle</button><a href="/transporter/vehicles" class="btn">Cancel</a></div>
+  </form>
+</section>
+{% endblock %}
+{% block page_js %}<script src="/static/js/pages/transporter.js"></script>{% endblock %}

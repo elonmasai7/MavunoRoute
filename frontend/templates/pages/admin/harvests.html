@@ -1,0 +1,28 @@
+{% extends "layouts/admin.html" %}
+{% block title %}Harvests - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header"><h2>All Harvests</h2></div>
+  <div class="table-wrapper"><table><thead><tr><th>Farmer</th><th>Crop</th><th>Quantity</th><th>Grade</th><th>Price/kg</th><th>Status</th><th>Date</th><th></th></tr></thead>
+  <tbody id="harvests-list"><tr class="table-empty"><td colspan="8"><p>Loading harvests...</p></td></tr></tbody></table></div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var data = await apiRequest("/api/v1/admin/harvests?page=1&per_page=50");
+    var items = data.items || data || [];
+    var tbody = document.getElementById("harvests-list");
+    tbody.innerHTML = "";
+    if (items.length === 0) {
+      tbody.innerHTML = '<tr class="table-empty"><td colspan="8"><p>No harvests found.</p></td></tr>';
+    } else {
+      items.forEach(function(h) {
+        tbody.innerHTML += '<tr><td>'+(h.farmer_name||h.farmer_id||'-')+'</td><td>'+(h.crop_name||h.crop_id)+'</td><td>'+h.quantity_kg+' kg</td><td>'+h.grade+'</td><td>'+formatCurrency(h.asking_price_per_kg)+'</td><td><span class="badge badge-'+h.status+'">'+h.status+'</span></td><td>'+formatDate(h.created_at)+'</td><td><a href="/admin/harvests/'+h.id+'" class="btn btn-sm btn-outline">View</a></td></tr>';
+      });
+    }
+  } catch(e) {
+    document.getElementById("harvests-list").innerHTML = '<tr class="table-empty"><td colspan="8"><p>Error loading harvests.</p></td></tr>';
+  }
+});
+</script>
+{% endblock %}

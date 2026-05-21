@@ -1,0 +1,22 @@
+{% extends "layouts/farmer.html" %}
+{% block title %}Reports - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header"><h2>My Reports</h2></div>
+  <div class="dashboard-grid">
+    <div class="stat-card stat-primary"><div class="stat-label">Total Harvests</div><div class="stat-value" id="report-total-harvests">-</div></div>
+    <div class="stat-card stat-success"><div class="stat-label">Total Quantity</div><div class="stat-value" id="report-total-qty">-</div></div>
+    <div class="stat-card stat-accent"><div class="stat-label">Avg Price/kg</div><div class="stat-value" id="report-avg-price">-</div></div>
+  </div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var data = await apiRequest("/api/v1/reports/farmer");
+    if (data.total_harvests !== undefined) document.getElementById("report-total-harvests").textContent = data.total_harvests;
+    if (data.total_quantity_kg !== undefined) document.getElementById("report-total-qty").textContent = data.total_quantity_kg + ' kg';
+    if (data.avg_price_per_kg !== undefined) document.getElementById("report-avg-price").textContent = formatCurrency(data.avg_price_per_kg);
+  } catch(e) {}
+});
+</script>
+{% endblock %}

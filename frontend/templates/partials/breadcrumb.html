@@ -1,0 +1,7 @@
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href="/dashboard">Dashboard</a>
+  {% if active_page %}
+  <span class="breadcrumb-sep">/</span>
+  <span class="breadcrumb-current">{{ active_page | replace('_', ' ') | title }}</span>
+  {% endif %}
+</nav>

@@ -1,0 +1,28 @@
+{% extends "layouts/cold_hub.html" %}
+{% block title %}Temperature Logs - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header"><h2>Temperature Logs</h2></div>
+  <div class="table-wrapper"><table><thead><tr><th>Harvest</th><th>Temperature</th><th>Location</th><th>Status</th><th>Timestamp</th></tr></thead>
+  <tbody id="templogs-list"><tr class="table-empty"><td colspan="5"><p>No temperature logs recorded.</p></td></tr></tbody></table></div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var data = await apiRequest("/api/v1/temperature-events?page=1&per_page=20");
+    var items = data.items || data || [];
+    var tbody = document.getElementById("templogs-list");
+    tbody.innerHTML = "";
+    if (items.length === 0) {
+      tbody.innerHTML = '<tr class="table-empty"><td colspan="5"><p>No temperature logs recorded.</p></td></tr>';
+    } else {
+      items.forEach(function(t) {
+        tbody.innerHTML += '<tr><td>'+(t.harvest_id||'-')+'</td><td>'+t.temperature+'°C</td><td>'+(t.location||'-')+'</td><td><span class="badge badge-'+(t.is_breach?'danger':'success')+'">'+(t.is_breach?'BREACH':'OK')+'</span></td><td>'+formatDateTime(t.recorded_at)+'</td></tr>';
+      });
+    }
+  } catch(e) {
+    document.getElementById("templogs-list").innerHTML = '<tr class="table-empty"><td colspan="5"><p>Error loading temperature logs.</p></td></tr>';
+  }
+});
+</script>
+{% endblock %}

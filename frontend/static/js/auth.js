@@ -1,6 +1,11 @@
 const API_BASE = "/api/v1/auth";
 
-async function postJSON(url, payload) {
+async function setCookie(name, value, days) {
+  const expires = new Date(Date.now() + days * 864e5).toUTCString();
+  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Lax`;
+}
+
+function postJSON(url, payload) {
   const response = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -27,7 +32,9 @@ if (loginForm) {
       const data = await postJSON(`${API_BASE}/login`, payload);
       localStorage.setItem("mavuno_access_token", data.access_token);
       localStorage.setItem("mavuno_refresh_token", data.refresh_token);
-      message.textContent = "Login successful.";
+      setCookie("mavuno_access_token", data.access_token, 1);
+      setCookie("mavuno_refresh_token", data.refresh_token, 14);
+      message.innerHTML = 'Login successful. <a href="/dashboard">Go to dashboard</a>.';
     } catch (err) {
       message.textContent = err.message;
     }

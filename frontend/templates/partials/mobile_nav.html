@@ -1,0 +1,16 @@
+<nav class="mobile-nav" id="mobileNav" hidden>
+  <div class="mobile-nav-header">
+    <span class="mobile-nav-title">Menu</span>
+    <button class="mobile-nav-close" aria-label="Close menu">&times;</button>
+  </div>
+  <div class="mobile-nav-user">
+    <span class="mobile-nav-name">{{ user.full_name }}</span>
+    <span class="mobile-nav-role">{{ user.role }}</span>
+  </div>
+  <ul class="mobile-nav-links">
+    <li><a href="/dashboard">Dashboard</a></li>
+    <li><a href="/profile">Profile</a></li>
+    <li><a href="/settings">Settings</a></li>
+    <li><a href="/logout" class="text-danger">Logout</a></li>
+  </ul>
+</nav>

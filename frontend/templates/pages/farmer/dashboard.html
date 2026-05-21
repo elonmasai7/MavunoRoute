@@ -1,0 +1,18 @@
+{% extends "layouts/farmer.html" %}
+{% block title %}Farmer Dashboard - MavunoRoute AI{% endblock %}
+{% block content %}
+<div class="dashboard-grid">
+  <div class="stat-card stat-primary"><div class="stat-label">My Harvests</div><div class="stat-value" id="stat-harvests">-</div></div>
+  <div class="stat-card stat-accent"><div class="stat-label">Active Offers</div><div class="stat-value" id="stat-offers">-</div></div>
+  <div class="stat-card stat-info"><div class="stat-label">Upcoming Pickups</div><div class="stat-value" id="stat-pickups">-</div></div>
+  <div class="stat-card stat-success"><div class="stat-label">Total Earnings</div><div class="stat-value" id="stat-earnings">-</div></div>
+</div>
+<section class="card">
+  <div class="card-header"><h2>Recent Harvests</h2><a href="/farmer/harvests" class="btn btn-sm btn-outline">View All</a></div>
+  <div class="table-wrapper">
+    <table><thead><tr><th>Crop</th><th>Quantity</th><th>Grade</th><th>Status</th><th>Date</th></tr></thead>
+    <tbody id="recent-harvests"><tr class="table-empty"><td colspan="5"><p>No harvests yet. <a href="/farmer/harvests/create">Create your first harvest</a>.</p></td></tr></tbody></table>
+  </div>
+</section>
+{% endblock %}
+{% block page_js %}<script src="/static/js/pages/farmer.js"></script>{% endblock %}

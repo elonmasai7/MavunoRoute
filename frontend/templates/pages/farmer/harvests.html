@@ -1,0 +1,30 @@
+{% extends "layouts/farmer.html" %}
+{% block title %}My Harvests - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header"><h2>My Harvests</h2><a href="/farmer/harvests/create" class="btn btn-sm btn-primary">+ New Harvest</a></div>
+  <div class="table-wrapper">
+    <table><thead><tr><th>Crop</th><th>Quantity (kg)</th><th>Grade</th><th>Price/kg</th><th>Status</th><th>Date</th><th></th></tr></thead>
+    <tbody id="harvests-list"><tr class="table-empty"><td colspan="7"><p>No harvests recorded yet.</p></td></tr></tbody></table>
+  </div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var data = await apiRequest("/api/v1/harvest-batches?page=1&per_page=20");
+    var items = data.items || data || [];
+    var tbody = document.getElementById("harvests-list");
+    tbody.innerHTML = "";
+    if (items.length === 0) {
+      tbody.innerHTML = '<tr class="table-empty"><td colspan="7"><p>No harvests recorded yet.</p></td></tr>';
+    } else {
+      items.forEach(function(h) {
+        tbody.innerHTML += '<tr><td>'+(h.crop_name||h.crop_id)+'</td><td>'+h.quantity_kg+'</td><td>'+h.grade+'</td><td>'+formatCurrency(h.asking_price_per_kg)+'</td><td><span class="badge badge-'+(h.status==='AVAILABLE'?'success':h.status==='PENDING'?'warning':'info')+'">'+h.status+'</span></td><td>'+formatDate(h.created_at)+'</td><td><a href="/farmer/harvests/'+h.id+'" class="btn btn-sm btn-outline">View</a></td></tr>';
+      });
+    }
+  } catch(e) {
+    document.getElementById("harvests-list").innerHTML = '<tr class="table-empty"><td colspan="7"><p>Error loading harvests.</p></td></tr>';
+  }
+});
+</script>
+{% endblock %}

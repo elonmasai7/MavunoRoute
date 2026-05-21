@@ -1,0 +1,7 @@
+{% if messages %}
+<div class="flash-messages">
+  {% for msg in messages %}
+  <div class="flash flash-{{ msg.type }}">{{ msg.text }}</div>
+  {% endfor %}
+</div>
+{% endif %}

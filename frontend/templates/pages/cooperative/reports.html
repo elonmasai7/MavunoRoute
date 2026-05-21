@@ -1,0 +1,22 @@
+{% extends "layouts/cooperative.html" %}
+{% block title %}Cooperative Reports - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header"><h2>Reports</h2></div>
+  <div class="dashboard-grid">
+    <div class="stat-card stat-primary"><div class="stat-label">Total Farmers</div><div class="stat-value" id="rpt-farmers">-</div></div>
+    <div class="stat-card stat-success"><div class="stat-label">Total Harvests</div><div class="stat-value" id="rpt-harvests">-</div></div>
+    <div class="stat-card stat-accent"><div class="stat-label">Total Quantity</div><div class="stat-value" id="rpt-qty">-</div></div>
+  </div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var data = await apiRequest("/api/v1/reports/cooperative");
+    if (data.total_farmers !== undefined) document.getElementById("rpt-farmers").textContent = data.total_farmers;
+    if (data.total_harvests !== undefined) document.getElementById("rpt-harvests").textContent = data.total_harvests;
+    if (data.total_quantity_kg !== undefined) document.getElementById("rpt-qty").textContent = data.total_quantity_kg + ' kg';
+  } catch(e) {}
+});
+</script>
+{% endblock %}

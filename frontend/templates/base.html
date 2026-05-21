@@ -1,21 +1,30 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>MavunoRoute AI</title>
-    <link rel="stylesheet" href="/static/css/app.css" />
-  </head>
-  <body>
-    <header class="site-header">
-      <a href="/" class="brand">MavunoRoute AI</a>
-      <nav>
-        <a href="/app/dashboard">Dashboard</a>
-        <a href="/app/mvp-flow">MVP Flow</a>
-        <a href="/login">Login</a>
-        <a href="/register">Register</a>
-      </nav>
-    </header>
-    <main class="container">{% block content %}{% endblock %}</main>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}MavunoRoute AI{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}MavunoRoute AI — Kenya-first agri-logistics operating system{% endblock %}">
+  <link rel="stylesheet" href="/static/css/base.css">
+  <link rel="stylesheet" href="/static/css/layout.css">
+  <link rel="stylesheet" href="/static/css/sidebar.css">
+  <link rel="stylesheet" href="/static/css/forms.css">
+  <link rel="stylesheet" href="/static/css/tables.css">
+  <link rel="stylesheet" href="/static/css/badges.css">
+  <link rel="stylesheet" href="/static/css/buttons.css">
+  <link rel="stylesheet" href="/static/css/dashboard.css">
+  {% block extra_css %}{% endblock %}
+  {% block page_css %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  {% block body %}
+    {% block content %}{% endblock %}
+  {% endblock %}
+
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/auth.js"></script>
+  <script src="/static/js/forms.js"></script>
+  {% block extra_js %}{% endblock %}
+  {% block page_js %}{% endblock %}
+</body>
 </html>

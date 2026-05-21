@@ -1,0 +1,16 @@
+{% extends "layouts/buyer.html" %}
+{% block title %}Buyer Dashboard - MavunoRoute AI{% endblock %}
+{% block content %}
+<div class="dashboard-grid">
+  <div class="stat-card stat-primary"><div class="stat-label">Active Demands</div><div class="stat-value" id="bstat-demands">-</div></div>
+  <div class="stat-card stat-info"><div class="stat-label">Open Matches</div><div class="stat-value" id="bstat-matches">-</div></div>
+  <div class="stat-card stat-accent"><div class="stat-label">Pending Orders</div><div class="stat-value" id="bstat-orders">-</div></div>
+  <div class="stat-card stat-success"><div class="stat-label">Total Spent</div><div class="stat-value" id="bstat-spent">-</div></div>
+</div>
+<section class="card">
+  <div class="card-header"><h2>Recent Demands</h2><a href="/buyer/demands" class="btn btn-sm btn-outline">View All</a></div>
+  <div class="table-wrapper"><table><thead><tr><th>Crop</th><th>Quantity</th><th>Budget</th><th>Status</th><th>Date</th></tr></thead>
+  <tbody id="recent-demands"><tr class="table-empty"><td colspan="5"><p>No demands yet. <a href="/buyer/demands/create">Create your first demand</a>.</p></td></tr></tbody></table></div>
+</section>
+{% endblock %}
+{% block page_js %}<script src="/static/js/pages/buyer.js"></script>{% endblock %}

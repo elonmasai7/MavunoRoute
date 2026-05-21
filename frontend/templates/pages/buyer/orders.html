@@ -1,0 +1,28 @@
+{% extends "layouts/buyer.html" %}
+{% block title %}Orders - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header"><h2>Orders</h2></div>
+  <div class="table-wrapper"><table><thead><tr><th>Order #</th><th>Harvest</th><th>Quantity</th><th>Total</th><th>Status</th><th>Date</th><th></th></tr></thead>
+  <tbody id="orders-list"><tr class="table-empty"><td colspan="7"><p>No orders placed yet.</p></td></tr></tbody></table></div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var data = await apiRequest("/api/v1/matching/matches?page=1&per_page=20&status=ACCEPTED");
+    var items = data.items || data || [];
+    var tbody = document.getElementById("orders-list");
+    tbody.innerHTML = "";
+    if (items.length === 0) {
+      tbody.innerHTML = '<tr class="table-empty"><td colspan="7"><p>No orders placed yet.</p></td></tr>';
+    } else {
+      items.forEach(function(m) {
+        tbody.innerHTML += '<tr><td>'+(m.id.slice(0,8))+'</td><td>'+(m.harvest_id||'-')+'</td><td>'+m.quantity_kg+' kg</td><td>'+formatCurrency(m.quantity_kg * m.price_per_kg)+'</td><td><span class="badge badge-info">'+m.status+'</span></td><td>'+formatDate(m.created_at)+'</td><td><a href="/buyer/orders/'+m.id+'" class="btn btn-sm btn-outline">View</a></td></tr>';
+      });
+    }
+  } catch(e) {
+    document.getElementById("orders-list").innerHTML = '<tr class="table-empty"><td colspan="7"><p>Error loading orders.</p></td></tr>';
+  }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "layouts/admin.html" %}
+{% block title %}Cold Hubs - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header"><h2>Cold Hubs</h2></div>
+  <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Location</th><th>Capacity</th><th>Used</th><th>Status</th><th></th></tr></thead>
+  <tbody id="coldhubs-list"><tr class="table-empty"><td colspan="6"><p>Loading cold hubs...</p></td></tr></tbody></table></div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var data = await apiRequest("/api/v1/admin/cold-hubs?page=1&per_page=50");
+    var items = data.items || data || [];
+    var tbody = document.getElementById("coldhubs-list");
+    tbody.innerHTML = "";
+    if (items.length === 0) {
+      tbody.innerHTML = '<tr class="table-empty"><td colspan="6"><p>No cold hubs found.</p></td></tr>';
+    } else {
+      items.forEach(function(c) {
+        tbody.innerHTML += '<tr><td>'+(c.name||'-')+'</td><td>'+(c.location||'-')+'</td><td>'+(c.total_capacity_kg||'-')+' kg</td><td>'+(c.used_capacity_kg||'0')+' kg</td><td><span class="badge badge-'+(c.is_active?'success':'danger')+'">'+(c.is_active?'ACTIVE':'INACTIVE')+'</span></td><td><a href="/admin/cold-hubs/'+c.id+'" class="btn btn-sm btn-outline">View</a></td></tr>';
+      });
+    }
+  } catch(e) {
+    document.getElementById("coldhubs-list").innerHTML = '<tr class="table-empty"><td colspan="6"><p>Error loading cold hubs.</p></td></tr>';
+  }
+});
+</script>
+{% endblock %}

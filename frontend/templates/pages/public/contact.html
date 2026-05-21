@@ -1,0 +1,17 @@
+{% extends "layouts/public.html" %}
+{% block title %}Contact - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="hero">
+  <h1>Contact Us</h1>
+  <p>Get in touch with the MavunoRoute team.</p>
+</section>
+<section class="card">
+  <h2>Send us a message</h2>
+  <form>
+    <label>Name <input type="text" name="name" required></label>
+    <label>Email <input type="email" name="email" required></label>
+    <label>Message <textarea name="message" rows="5" required></textarea></label>
+    <button type="submit" class="btn btn-primary">Send Message</button>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "layouts/admin.html" %}
+{% block title %}Audit Logs - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header"><h2>Audit Logs</h2></div>
+  <div class="table-wrapper"><table><thead><tr><th>User</th><th>Action</th><th>Entity</th><th>IP</th><th>Timestamp</th></tr></thead>
+  <tbody id="auditlogs-list"><tr class="table-empty"><td colspan="5"><p>Loading audit logs...</p></td></tr></tbody></table></div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var data = await apiRequest("/api/v1/admin/audit-logs?page=1&per_page=50");
+    var items = data.items || data || [];
+    var tbody = document.getElementById("auditlogs-list");
+    tbody.innerHTML = "";
+    if (items.length === 0) {
+      tbody.innerHTML = '<tr class="table-empty"><td colspan="5"><p>No audit logs found.</p></td></tr>';
+    } else {
+      items.forEach(function(l) {
+        tbody.innerHTML += '<tr><td>'+(l.user_name||l.user_id||'-')+'</td><td>'+l.action+'</td><td>'+l.entity_type+'</td><td>'+(l.ip_address||'-')+'</td><td>'+formatDateTime(l.created_at)+'</td></tr>';
+      });
+    }
+  } catch(e) {
+    document.getElementById("auditlogs-list").innerHTML = '<tr class="table-empty"><td colspan="5"><p>Error loading audit logs.</p></td></tr>';
+  }
+});
+</script>
+{% endblock %}

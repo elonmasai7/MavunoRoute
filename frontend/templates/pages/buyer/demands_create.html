@@ -1,0 +1,21 @@
+{% extends "layouts/buyer.html" %}
+{% block title %}Create Demand - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="form-card">
+  <h2>Create Buyer Demand</h2>
+  <form id="demand-form">
+    <label>Crop ID <input type="text" name="crop_id" required placeholder="UUID of the crop"></label>
+    <label>Quantity (kg) <input type="number" name="quantity_kg" min="1" step="0.1" required></label>
+    <label>Desired Grade <input type="text" name="desired_grade" value="A"></label>
+    <label>Max Price per kg <input type="number" name="max_price_per_kg" min="1" step="0.01" required></label>
+    <label>Required Delivery Date & Time <input type="datetime-local" name="required_delivery_datetime" required></label>
+    <div class="form-row">
+      <label>Delivery Latitude <input type="number" name="delivery_latitude" step="0.000001" required></label>
+      <label>Delivery Longitude <input type="number" name="delivery_longitude" step="0.000001" required></label>
+    </div>
+    <p class="form-message" id="demand-message"></p>
+    <div class="form-actions"><button type="submit" class="btn btn-primary">Create Demand</button><a href="/buyer/demands" class="btn">Cancel</a></div>
+  </form>
+</section>
+{% endblock %}
+{% block page_js %}<script src="/static/js/pages/buyer.js"></script>{% endblock %}

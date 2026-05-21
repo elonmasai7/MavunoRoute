@@ -1,0 +1,22 @@
+{% extends "layouts/farmer.html" %}
+{% block title %}Create Harvest - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="form-card">
+  <h2>Create Harvest Batch</h2>
+  <form id="harvest-form">
+    <label>Crop ID <input type="text" name="crop_id" required placeholder="UUID of the crop"></label>
+    <label>Quantity (kg) <input type="number" name="quantity_kg" min="1" step="0.1" required></label>
+    <label>Grade <input type="text" name="grade" value="A" required></label>
+    <label>Packaging Type <input type="text" name="packaging_type" value="Crate"></label>
+    <label>Asking Price per kg <input type="number" name="asking_price_per_kg" min="1" step="0.01" required></label>
+    <label>Expected Harvest Date & Time <input type="datetime-local" name="expected_harvest_datetime" required></label>
+    <div class="form-row">
+      <label>Latitude <input type="number" name="latitude" step="0.000001" required></label>
+      <label>Longitude <input type="number" name="longitude" step="0.000001" required></label>
+    </div>
+    <p class="form-message" id="harvest-message"></p>
+    <div class="form-actions"><button type="submit" class="btn btn-primary">Create Harvest</button><a href="/farmer/harvests" class="btn">Cancel</a></div>
+  </form>
+</section>
+{% endblock %}
+{% block page_js %}<script src="/static/js/pages/farmer.js"></script>{% endblock %}

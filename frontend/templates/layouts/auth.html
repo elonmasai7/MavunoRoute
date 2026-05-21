@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block body_class %}auth-layout{% endblock %}
+{% block body %}
+  {% include "partials/flash_messages.html" %}
+  <main class="auth-main">
+    {% block content %}{% endblock %}
+  </main>
+{% endblock %}

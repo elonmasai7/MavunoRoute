@@ -1,0 +1,30 @@
+{% extends "layouts/farmer.html" %}
+{% block title %}Payments - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header"><h2>Payment History</h2></div>
+  <div class="table-wrapper">
+    <table><thead><tr><th>Date</th><th>Amount</th><th>Method</th><th>Status</th><th>Reference</th></tr></thead>
+    <tbody id="payments-list"><tr class="table-empty"><td colspan="5"><p>No payments received yet.</p></td></tr></tbody></table>
+  </div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var data = await apiRequest("/api/v1/payments?page=1&per_page=20");
+    var items = data.items || data || [];
+    var tbody = document.getElementById("payments-list");
+    tbody.innerHTML = "";
+    if (items.length === 0) {
+      tbody.innerHTML = '<tr class="table-empty"><td colspan="5"><p>No payments received yet.</p></td></tr>';
+    } else {
+      items.forEach(function(p) {
+        tbody.innerHTML += '<tr><td>'+formatDate(p.created_at)+'</td><td>'+formatCurrency(p.amount)+'</td><td>'+(p.method||'-')+'</td><td><span class="badge badge-'+(p.status==='COMPLETED'?'success':p.status==='PENDING'?'warning':'danger')+'">'+p.status+'</span></td><td>'+(p.reference||'-')+'</td></tr>';
+      });
+    }
+  } catch(e) {
+    document.getElementById("payments-list").innerHTML = '<tr class="table-empty"><td colspan="5"><p>Error loading payments.</p></td></tr>';
+  }
+});
+</script>
+{% endblock %}

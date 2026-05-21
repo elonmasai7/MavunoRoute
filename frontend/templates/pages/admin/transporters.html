@@ -1,0 +1,28 @@
+{% extends "layouts/admin.html" %}
+{% block title %}Transporters - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header"><h2>All Transporters</h2></div>
+  <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Vehicles</th><th>Status</th><th></th></tr></thead>
+  <tbody id="transporters-list"><tr class="table-empty"><td colspan="6"><p>Loading transporters...</p></td></tr></tbody></table></div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var data = await apiRequest("/api/v1/admin/transporters?page=1&per_page=50");
+    var items = data.items || data || [];
+    var tbody = document.getElementById("transporters-list");
+    tbody.innerHTML = "";
+    if (items.length === 0) {
+      tbody.innerHTML = '<tr class="table-empty"><td colspan="6"><p>No transporters found.</p></td></tr>';
+    } else {
+      items.forEach(function(t) {
+        tbody.innerHTML += '<tr><td>'+(t.full_name||t.name||'-')+'</td><td>'+(t.email||'-')+'</td><td>'+(t.phone_number||'-')+'</td><td>'+(t.vehicle_count||'0')+'</td><td><span class="badge badge-'+(t.is_active?'success':'danger')+'">'+(t.is_active?'ACTIVE':'INACTIVE')+'</span></td><td><a href="/admin/transporters/'+t.id+'" class="btn btn-sm btn-outline">View</a></td></tr>';
+      });
+    }
+  } catch(e) {
+    document.getElementById("transporters-list").innerHTML = '<tr class="table-empty"><td colspan="6"><p>Error loading transporters.</p></td></tr>';
+  }
+});
+</script>
+{% endblock %}

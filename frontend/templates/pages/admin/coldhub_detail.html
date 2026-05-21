@@ -1,0 +1,23 @@
+{% extends "layouts/admin.html" %}
+{% block title %}Cold Hub Detail - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header"><h2>Cold Hub {{ hub_id }}</h2></div>
+  <div class="detail-grid"><div class="detail-section"><h3>Details</h3><div id="coldhub-detail"><p class="text-muted">Loading...</p></div></div></div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var c = await apiRequest("/api/v1/admin/cold-hubs/{{ hub_id }}");
+    var html = '<div class="detail-row"><span class="detail-label">Name</span><span class="detail-value">'+(c.name||'-')+'</span></div>' +
+      '<div class="detail-row"><span class="detail-label">Location</span><span class="detail-value">'+(c.location||'-')+'</span></div>' +
+      '<div class="detail-row"><span class="detail-label">Total Capacity</span><span class="detail-value">'+(c.total_capacity_kg||'-')+' kg</span></div>' +
+      '<div class="detail-row"><span class="detail-label">Used Capacity</span><span class="detail-value">'+(c.used_capacity_kg||'0')+' kg</span></div>' +
+      '<div class="detail-row"><span class="detail-label">Status</span><span class="detail-value"><span class="badge badge-'+(c.is_active?'success':'danger')+'">'+(c.is_active?'ACTIVE':'INACTIVE')+'</span></span></div>';
+    document.getElementById("coldhub-detail").innerHTML = html;
+  } catch(e) {
+    document.getElementById("coldhub-detail").innerHTML = '<p class="text-danger">Error loading cold hub.</p>';
+  }
+});
+</script>
+{% endblock %}

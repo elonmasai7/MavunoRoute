@@ -1,0 +1,28 @@
+{% extends "layouts/cold_hub.html" %}
+{% block title %}Cold Hub Dashboard - MavunoRoute AI{% endblock %}
+{% block content %}
+<div class="dashboard-grid">
+  <div class="stat-card stat-primary"><div class="stat-label">Capacity Used</div><div class="stat-value" id="ch-capacity">-</div></div>
+  <div class="stat-card stat-info"><div class="stat-label">Active Check-Ins</div><div class="stat-value" id="ch-checkins">-</div></div>
+  <div class="stat-card stat-accent"><div class="stat-label">Temperature Logs</div><div class="stat-value" id="ch-logs">-</div></div>
+  <div class="stat-card stat-danger"><div class="stat-label">Breaches</div><div class="stat-value" id="ch-breaches">-</div></div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var data = await apiRequest("/api/v1/cold-hubs/me");
+    if (data.capacity_used !== undefined) document.getElementById("ch-capacity").textContent = data.capacity_used + '%';
+    if (data.active_checkins !== undefined) document.getElementById("ch-checkins").textContent = data.active_checkins;
+  } catch(e) { document.getElementById("ch-capacity").textContent = 'N/A'; }
+  try {
+    var tl = await apiRequest("/api/v1/temperature-events?page=1&per_page=1&limit=0");
+    document.getElementById("ch-logs").textContent = tl.total || '-';
+  } catch(e) {}
+  try {
+    var bl = await apiRequest("/api/v1/temperature-events?page=1&per_page=1&status=breach&limit=0");
+    document.getElementById("ch-breaches").textContent = bl.total || '-';
+  } catch(e) {}
+});
+</script>
+{% endblock %}
+{% block page_js %}<script src="/static/js/pages/cold_hub.js"></script>{% endblock %}

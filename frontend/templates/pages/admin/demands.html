@@ -1,0 +1,28 @@
+{% extends "layouts/admin.html" %}
+{% block title %}Demands - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header"><h2>All Buyer Demands</h2></div>
+  <div class="table-wrapper"><table><thead><tr><th>Buyer</th><th>Crop</th><th>Quantity</th><th>Max Price</th><th>Status</th><th>Deadline</th><th></th></tr></thead>
+  <tbody id="demands-list"><tr class="table-empty"><td colspan="7"><p>Loading demands...</p></td></tr></tbody></table></div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var data = await apiRequest("/api/v1/admin/demands?page=1&per_page=50");
+    var items = data.items || data || [];
+    var tbody = document.getElementById("demands-list");
+    tbody.innerHTML = "";
+    if (items.length === 0) {
+      tbody.innerHTML = '<tr class="table-empty"><td colspan="7"><p>No demands found.</p></td></tr>';
+    } else {
+      items.forEach(function(d) {
+        tbody.innerHTML += '<tr><td>'+(d.buyer_name||d.buyer_id||'-')+'</td><td>'+(d.crop_name||d.crop_id)+'</td><td>'+d.quantity_kg+' kg</td><td>'+formatCurrency(d.max_price_per_kg)+'</td><td><span class="badge badge-'+d.status+'">'+d.status+'</span></td><td>'+formatDate(d.required_delivery_datetime)+'</td><td><a href="/admin/demands/'+d.id+'" class="btn btn-sm btn-outline">View</a></td></tr>';
+      });
+    }
+  } catch(e) {
+    document.getElementById("demands-list").innerHTML = '<tr class="table-empty"><td colspan="7"><p>Error loading demands.</p></td></tr>';
+  }
+});
+</script>
+{% endblock %}

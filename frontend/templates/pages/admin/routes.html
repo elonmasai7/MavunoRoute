@@ -1,0 +1,28 @@
+{% extends "layouts/admin.html" %}
+{% block title %}Routes - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header"><h2>All Routes</h2></div>
+  <div class="table-wrapper"><table><thead><tr><th>Route ID</th><th>Stops</th><th>Distance</th><th>Status</th><th>Created</th><th></th></tr></thead>
+  <tbody id="routes-list"><tr class="table-empty"><td colspan="6"><p>Loading routes...</p></td></tr></tbody></table></div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var data = await apiRequest("/api/v1/admin/routes?page=1&per_page=50");
+    var items = data.items || data || [];
+    var tbody = document.getElementById("routes-list");
+    tbody.innerHTML = "";
+    if (items.length === 0) {
+      tbody.innerHTML = '<tr class="table-empty"><td colspan="6"><p>No routes found.</p></td></tr>';
+    } else {
+      items.forEach(function(r) {
+        tbody.innerHTML += '<tr><td>'+(r.id.slice(0,8))+'</td><td>'+(r.total_stops||'-')+'</td><td>'+(r.total_distance_km ? r.total_distance_km+' km' : '-')+'</td><td><span class="badge badge-'+r.status+'">'+r.status+'</span></td><td>'+formatDate(r.created_at)+'</td><td><a href="/admin/routes/'+r.id+'" class="btn btn-sm btn-outline">View</a></td></tr>';
+      });
+    }
+  } catch(e) {
+    document.getElementById("routes-list").innerHTML = '<tr class="table-empty"><td colspan="6"><p>Error loading routes.</p></td></tr>';
+  }
+});
+</script>
+{% endblock %}

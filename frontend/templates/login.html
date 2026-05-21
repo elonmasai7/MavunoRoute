@@ -1,13 +1,16 @@
-{% extends "base.html" %}
+{% extends "layouts/auth.html" %}
+{% block title %}Login - MavunoRoute AI{% endblock %}
 {% block content %}
 <section class="card">
   <h2>Login</h2>
   <form id="login-form">
     <label>Email <input type="email" name="email" required /></label>
     <label>Password <input type="password" name="password" required minlength="8" /></label>
-    <button type="submit" class="btn primary">Login</button>
+    <button type="submit" class="btn btn-primary">Login</button>
     <p id="login-message" class="form-message"></p>
   </form>
+  <p class="mt-2 text-center"><a href="/forgot-password">Forgot password?</a></p>
+  <p class="text-center">Don't have an account? <a href="/register">Register</a></p>
 </section>
 <script src="/static/js/auth.js"></script>
 {% endblock %}

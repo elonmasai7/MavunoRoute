@@ -1,0 +1,70 @@
+<nav class="sidebar">
+  <div class="sidebar-header">
+    <a href="/dashboard" class="sidebar-logo">MavunoRoute</a>
+  </div>
+  <div class="sidebar-user">
+    <span class="sidebar-user-name">{{ user.full_name }}</span>
+    <span class="sidebar-user-role">{{ user.role }}</span>
+  </div>
+  <ul class="sidebar-nav">
+    <li class="nav-item {% if active_page == 'admin_dashboard' %}active{% endif %}">
+      <a href="/admin/dashboard">Dashboard</a>
+    </li>
+    <li class="nav-section-label">User Management</li>
+    <li class="nav-item {% if active_page == 'admin_users' %}active{% endif %}">
+      <a href="/admin/users">Users</a>
+    </li>
+    <li class="nav-item {% if active_page == 'admin_farmers' %}active{% endif %}">
+      <a href="/admin/farmers">Farmers</a>
+    </li>
+    <li class="nav-item {% if active_page == 'admin_buyers' %}active{% endif %}">
+      <a href="/admin/buyers">Buyers</a>
+    </li>
+    <li class="nav-item {% if active_page == 'admin_transporters' %}active{% endif %}">
+      <a href="/admin/transporters">Transporters</a>
+    </li>
+    <li class="nav-item {% if active_page == 'admin_vehicles' %}active{% endif %}">
+      <a href="/admin/vehicles">Vehicles</a>
+    </li>
+    <li class="nav-section-label">Operations</li>
+    <li class="nav-item {% if active_page == 'admin_harvests' %}active{% endif %}">
+      <a href="/admin/harvests">Harvests</a>
+    </li>
+    <li class="nav-item {% if active_page == 'admin_demands' %}active{% endif %}">
+      <a href="/admin/demands">Demands</a>
+    </li>
+    <li class="nav-item {% if active_page == 'admin_routes' %}active{% endif %}">
+      <a href="/admin/routes">Routes</a>
+    </li>
+    <li class="nav-item {% if active_page == 'admin_jobs' %}active{% endif %}">
+      <a href="/admin/transport-jobs">Transport Jobs</a>
+    </li>
+    <li class="nav-item {% if active_page == 'admin_coldhubs' %}active{% endif %}">
+      <a href="/admin/cold-hubs">Cold Hubs</a>
+    </li>
+    <li class="nav-item {% if active_page == 'admin_payments' %}active{% endif %}">
+      <a href="/admin/payments">Payments</a>
+    </li>
+    <li class="nav-section-label">Monitoring</li>
+    <li class="nav-item {% if active_page == 'admin_reports' %}active{% endif %}">
+      <a href="/admin/reports">Reports</a>
+    </li>
+    <li class="nav-item {% if active_page == 'admin_auditlogs' %}active{% endif %}">
+      <a href="/admin/audit-logs">Audit Logs</a>
+    </li>
+    <li class="nav-item {% if active_page == 'admin_integrationlogs' %}active{% endif %}">
+      <a href="/admin/integration-logs">Integration Logs</a>
+    </li>
+    <li class="nav-item {% if active_page == 'admin_health' %}active{% endif %}">
+      <a href="/admin/system-health">System Health</a>
+    </li>
+    <li class="nav-item {% if active_page == 'admin_settings' %}active{% endif %}">
+      <a href="/admin/settings">Settings</a>
+    </li>
+  </ul>
+  <div class="sidebar-footer">
+    <a href="/profile">Profile</a>
+    <a href="/settings">Settings</a>
+    <a href="/logout" class="text-danger">Logout</a>
+  </div>
+</nav>

@@ -1,4 +1,5 @@
-{% extends "base.html" %}
+{% extends "layouts/auth.html" %}
+{% block title %}Register - MavunoRoute AI{% endblock %}
 {% block content %}
 <section class="card">
   <h2>Register</h2>
@@ -15,9 +16,10 @@
         <option value="COLD_HUB_OPERATOR">Cold Hub Operator</option>
       </select>
     </label>
-    <button type="submit" class="btn primary">Create account</button>
+    <button type="submit" class="btn btn-primary">Create account</button>
     <p id="register-message" class="form-message"></p>
   </form>
+  <p class="mt-2 text-center">Already have an account? <a href="/login">Login</a></p>
 </section>
 <script src="/static/js/auth.js"></script>
 {% endblock %}

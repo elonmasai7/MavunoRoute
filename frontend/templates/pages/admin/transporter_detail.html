@@ -1,0 +1,23 @@
+{% extends "layouts/admin.html" %}
+{% block title %}Transporter Detail - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header"><h2>Transporter {{ transporter_id }}</h2></div>
+  <div class="detail-grid"><div class="detail-section"><h3>Details</h3><div id="transporter-detail"><p class="text-muted">Loading...</p></div></div></div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var t = await apiRequest("/api/v1/admin/transporters/{{ transporter_id }}");
+    var html = '<div class="detail-row"><span class="detail-label">Name</span><span class="detail-value">'+(t.full_name||'-')+'</span></div>' +
+      '<div class="detail-row"><span class="detail-label">Email</span><span class="detail-value">'+(t.email||'-')+'</span></div>' +
+      '<div class="detail-row"><span class="detail-label">Phone</span><span class="detail-value">'+(t.phone_number||'-')+'</span></div>' +
+      '<div class="detail-row"><span class="detail-label">Vehicles</span><span class="detail-value">'+(t.vehicle_count||'0')+'</span></div>' +
+      '<div class="detail-row"><span class="detail-label">Status</span><span class="detail-value"><span class="badge badge-'+(t.is_active?'success':'danger')+'">'+(t.is_active?'ACTIVE':'INACTIVE')+'</span></span></div>';
+    document.getElementById("transporter-detail").innerHTML = html;
+  } catch(e) {
+    document.getElementById("transporter-detail").innerHTML = '<p class="text-danger">Error loading transporter.</p>';
+  }
+});
+</script>
+{% endblock %}

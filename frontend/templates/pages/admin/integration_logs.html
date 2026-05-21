@@ -1,0 +1,28 @@
+{% extends "layouts/admin.html" %}
+{% block title %}Integration Logs - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header"><h2>Integration Logs</h2></div>
+  <div class="table-wrapper"><table><thead><tr><th>Provider</th><th>Endpoint</th><th>Status</th><th>Duration</th><th>Timestamp</th></tr></thead>
+  <tbody id="integrationlogs-list"><tr class="table-empty"><td colspan="5"><p>No integration logs found.</p></td></tr></tbody></table></div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var data = await apiRequest("/api/v1/admin/integration-logs?page=1&per_page=50");
+    var items = data.items || data || [];
+    var tbody = document.getElementById("integrationlogs-list");
+    tbody.innerHTML = "";
+    if (items.length === 0) {
+      tbody.innerHTML = '<tr class="table-empty"><td colspan="5"><p>No integration logs found.</p></td></tr>';
+    } else {
+      items.forEach(function(l) {
+        tbody.innerHTML += '<tr><td>'+(l.provider||'-')+'</td><td>'+(l.endpoint||'-')+'</td><td><span class="badge badge-'+(l.status==='SUCCESS'?'success':l.status==='ERROR'?'danger':'warning')+'">'+(l.status||'-')+'</span></td><td>'+(l.duration_ms ? l.duration_ms+'ms' : '-')+'</td><td>'+formatDateTime(l.created_at)+'</td></tr>';
+      });
+    }
+  } catch(e) {
+    document.getElementById("integrationlogs-list").innerHTML = '<tr class="table-empty"><td colspan="5"><p>Error loading integration logs.</p></td></tr>';
+  }
+});
+</script>
+{% endblock %}

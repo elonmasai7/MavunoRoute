@@ -1,0 +1,28 @@
+{% extends "layouts/admin.html" %}
+{% block title %}Farmers - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header"><h2>All Farmers</h2></div>
+  <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Cooperative</th><th>Status</th><th></th></tr></thead>
+  <tbody id="farmers-list"><tr class="table-empty"><td colspan="6"><p>Loading farmers...</p></td></tr></tbody></table></div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var data = await apiRequest("/api/v1/admin/farmers?page=1&per_page=50");
+    var items = data.items || data || [];
+    var tbody = document.getElementById("farmers-list");
+    tbody.innerHTML = "";
+    if (items.length === 0) {
+      tbody.innerHTML = '<tr class="table-empty"><td colspan="6"><p>No farmers found.</p></td></tr>';
+    } else {
+      items.forEach(function(f) {
+        tbody.innerHTML += '<tr><td>'+(f.full_name||f.name||'-')+'</td><td>'+(f.email||'-')+'</td><td>'+(f.phone_number||'-')+'</td><td>'+(f.cooperative_name||'-')+'</td><td><span class="badge badge-'+(f.is_active?'success':'danger')+'">'+(f.is_active?'ACTIVE':'INACTIVE')+'</span></td><td><a href="/admin/farmers/'+f.id+'" class="btn btn-sm btn-outline">View</a></td></tr>';
+      });
+    }
+  } catch(e) {
+    document.getElementById("farmers-list").innerHTML = '<tr class="table-empty"><td colspan="6"><p>Error loading farmers.</p></td></tr>';
+  }
+});
+</script>
+{% endblock %}

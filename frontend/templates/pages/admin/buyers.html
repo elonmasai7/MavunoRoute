@@ -1,0 +1,28 @@
+{% extends "layouts/admin.html" %}
+{% block title %}Buyers - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header"><h2>All Buyers</h2></div>
+  <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Status</th><th></th></tr></thead>
+  <tbody id="buyers-list"><tr class="table-empty"><td colspan="5"><p>Loading buyers...</p></td></tr></tbody></table></div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var data = await apiRequest("/api/v1/admin/buyers?page=1&per_page=50");
+    var items = data.items || data || [];
+    var tbody = document.getElementById("buyers-list");
+    tbody.innerHTML = "";
+    if (items.length === 0) {
+      tbody.innerHTML = '<tr class="table-empty"><td colspan="5"><p>No buyers found.</p></td></tr>';
+    } else {
+      items.forEach(function(b) {
+        tbody.innerHTML += '<tr><td>'+(b.full_name||b.name||'-')+'</td><td>'+(b.email||'-')+'</td><td>'+(b.phone_number||'-')+'</td><td><span class="badge badge-'+(b.is_active?'success':'danger')+'">'+(b.is_active?'ACTIVE':'INACTIVE')+'</span></td><td><a href="/admin/buyers/'+b.id+'" class="btn btn-sm btn-outline">View</a></td></tr>';
+      });
+    }
+  } catch(e) {
+    document.getElementById("buyers-list").innerHTML = '<tr class="table-empty"><td colspan="5"><p>Error loading buyers.</p></td></tr>';
+  }
+});
+</script>
+{% endblock %}

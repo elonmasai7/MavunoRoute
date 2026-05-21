@@ -1,0 +1,28 @@
+{% extends "layouts/admin.html" %}
+{% block title %}Vehicles - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header"><h2>All Vehicles</h2></div>
+  <div class="table-wrapper"><table><thead><tr><th>Registration</th><th>Type</th><th>Capacity</th><th>Transporter</th><th>Status</th><th></th></tr></thead>
+  <tbody id="vehicles-list"><tr class="table-empty"><td colspan="6"><p>Loading vehicles...</p></td></tr></tbody></table></div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var data = await apiRequest("/api/v1/vehicles?page=1&per_page=50");
+    var items = data.items || data || [];
+    var tbody = document.getElementById("vehicles-list");
+    tbody.innerHTML = "";
+    if (items.length === 0) {
+      tbody.innerHTML = '<tr class="table-empty"><td colspan="6"><p>No vehicles found.</p></td></tr>';
+    } else {
+      items.forEach(function(v) {
+        tbody.innerHTML += '<tr><td>'+v.registration_number+'</td><td>'+v.vehicle_type+'</td><td>'+v.capacity_kg+' kg</td><td>'+(v.transporter_name||v.transporter_id||'-')+'</td><td><span class="badge badge-'+v.status+'">'+v.status+'</span></td><td><a href="/admin/vehicles/'+v.id+'" class="btn btn-sm btn-outline">View</a></td></tr>';
+      });
+    }
+  } catch(e) {
+    document.getElementById("vehicles-list").innerHTML = '<tr class="table-empty"><td colspan="6"><p>Error loading vehicles.</p></td></tr>';
+  }
+});
+</script>
+{% endblock %}

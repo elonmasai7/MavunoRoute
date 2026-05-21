@@ -1,0 +1,25 @@
+{% extends "layouts/admin.html" %}
+{% block title %}Reports - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header"><h2>Platform Reports</h2></div>
+  <div class="dashboard-grid">
+    <div class="stat-card stat-primary"><div class="stat-label">Total Users</div><div class="stat-value" id="r-total-users">-</div></div>
+    <div class="stat-card stat-success"><div class="stat-label">Total Harvests</div><div class="stat-value" id="r-total-harvests">-</div></div>
+    <div class="stat-card stat-accent"><div class="stat-label">Total Demands</div><div class="stat-value" id="r-total-demands">-</div></div>
+    <div class="stat-card stat-info"><div class="stat-label">Active Jobs</div><div class="stat-value" id="r-active-jobs">-</div></div>
+  </div>
+  <button id="refresh-reports" class="btn btn-sm btn-outline mt-2">Refresh</button>
+</section>
+<script>
+document.getElementById("refresh-reports")?.addEventListener("click", async function() {
+  try {
+    var d = await apiRequest("/api/v1/reports/dashboard");
+    if (d.total_users !== undefined) document.getElementById("r-total-users").textContent = d.total_users;
+    if (d.total_harvests !== undefined) document.getElementById("r-total-harvests").textContent = d.total_harvests;
+    if (d.total_demands !== undefined) document.getElementById("r-total-demands").textContent = d.total_demands;
+    if (d.active_jobs !== undefined) document.getElementById("r-active-jobs").textContent = d.active_jobs;
+  } catch(e) { alert("Error loading reports"); }
+});
+</script>
+{% endblock %}

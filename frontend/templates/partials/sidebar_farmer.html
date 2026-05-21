@@ -1,0 +1,37 @@
+<nav class="sidebar">
+  <div class="sidebar-header">
+    <a href="/dashboard" class="sidebar-logo">MavunoRoute</a>
+  </div>
+  <div class="sidebar-user">
+    <span class="sidebar-user-name">{{ user.full_name }}</span>
+    <span class="sidebar-user-role">{{ user.role }}</span>
+  </div>
+  <ul class="sidebar-nav">
+    <li class="nav-item {% if active_page == 'farmer_dashboard' %}active{% endif %}">
+      <a href="/farmer/dashboard">Dashboard</a>
+    </li>
+    <li class="nav-item {% if active_page == 'farmer_harvests' %}active{% endif %}">
+      <a href="/farmer/harvests">My Harvests</a>
+    </li>
+    <li class="nav-item {% if active_page == 'farmer_harvests_create' %}active{% endif %}">
+      <a href="/farmer/harvests/create">Create Harvest</a>
+    </li>
+    <li class="nav-item {% if active_page == 'farmer_offers' %}active{% endif %}">
+      <a href="/farmer/offers">Buyer Offers</a>
+    </li>
+    <li class="nav-item {% if active_page == 'farmer_pickups' %}active{% endif %}">
+      <a href="/farmer/pickups">Pickups</a>
+    </li>
+    <li class="nav-item {% if active_page == 'farmer_payments' %}active{% endif %}">
+      <a href="/farmer/payments">Payments</a>
+    </li>
+    <li class="nav-item {% if active_page == 'farmer_reports' %}active{% endif %}">
+      <a href="/farmer/reports">Reports</a>
+    </li>
+  </ul>
+  <div class="sidebar-footer">
+    <a href="/profile">Profile</a>
+    <a href="/settings">Settings</a>
+    <a href="/logout" class="text-danger">Logout</a>
+  </div>
+</nav>

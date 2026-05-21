@@ -1,0 +1,30 @@
+{% extends "layouts/farmer.html" %}
+{% block title %}Pickups - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header"><h2>Upcoming Pickups</h2></div>
+  <div class="table-wrapper">
+    <table><thead><tr><th>Harvest</th><th>Transporter</th><th>Date</th><th>Status</th><th></th></tr></thead>
+    <tbody id="pickups-list"><tr class="table-empty"><td colspan="5"><p>No pickups scheduled.</p></td></tr></tbody></table>
+  </div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var data = await apiRequest("/api/v1/transport-jobs?page=1&per_page=20");
+    var items = data.items || data || [];
+    var tbody = document.getElementById("pickups-list");
+    tbody.innerHTML = "";
+    if (items.length === 0) {
+      tbody.innerHTML = '<tr class="table-empty"><td colspan="5"><p>No pickups scheduled.</p></td></tr>';
+    } else {
+      items.forEach(function(j) {
+        tbody.innerHTML += '<tr><td>'+(j.harvest_id||'-')+'</td><td>'+(j.transporter_name||j.transporter_id||'-')+'</td><td>'+formatDate(j.scheduled_at)+'</td><td><span class="badge badge-'+j.status+'">'+j.status+'</span></td><td><a href="/transporter/jobs/'+j.id+'" class="btn btn-sm btn-outline">View</a></td></tr>';
+      });
+    }
+  } catch(e) {
+    document.getElementById("pickups-list").innerHTML = '<tr class="table-empty"><td colspan="5"><p>Error loading pickups.</p></td></tr>';
+  }
+});
+</script>
+{% endblock %}

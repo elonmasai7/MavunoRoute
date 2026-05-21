@@ -1,0 +1,28 @@
+{% extends "layouts/admin.html" %}
+{% block title %}Transport Jobs - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header"><h2>All Transport Jobs</h2></div>
+  <div class="table-wrapper"><table><thead><tr><th>Job ID</th><th>Route</th><th>Transporter</th><th>Vehicle</th><th>Status</th><th>Scheduled</th><th></th></tr></thead>
+  <tbody id="jobs-list"><tr class="table-empty"><td colspan="7"><p>Loading jobs...</p></td></tr></tbody></table></div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var data = await apiRequest("/api/v1/admin/transport-jobs?page=1&per_page=50");
+    var items = data.items || data || [];
+    var tbody = document.getElementById("jobs-list");
+    tbody.innerHTML = "";
+    if (items.length === 0) {
+      tbody.innerHTML = '<tr class="table-empty"><td colspan="7"><p>No transport jobs found.</p></td></tr>';
+    } else {
+      items.forEach(function(j) {
+        tbody.innerHTML += '<tr><td>'+(j.id.slice(0,8))+'</td><td>'+(j.route_id||'-')+'</td><td>'+(j.transporter_name||j.transporter_id||'-')+'</td><td>'+(j.vehicle_id||'-')+'</td><td><span class="badge badge-'+j.status+'">'+j.status+'</span></td><td>'+formatDate(j.scheduled_at)+'</td><td><a href="/admin/transport-jobs/'+j.id+'" class="btn btn-sm btn-outline">View</a></td></tr>';
+      });
+    }
+  } catch(e) {
+    document.getElementById("jobs-list").innerHTML = '<tr class="table-empty"><td colspan="7"><p>Error loading jobs.</p></td></tr>';
+  }
+});
+</script>
+{% endblock %}

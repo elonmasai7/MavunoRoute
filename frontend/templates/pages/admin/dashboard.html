@@ -1,0 +1,18 @@
+{% extends "layouts/admin.html" %}
+{% block title %}Admin Dashboard - MavunoRoute AI{% endblock %}
+{% block content %}
+<div class="dashboard-grid">
+  <div class="stat-card stat-primary"><div class="stat-label">Total Users</div><div class="stat-value" id="ad-total-users">-</div></div>
+  <div class="stat-card stat-info"><div class="stat-label">Active Farmers</div><div class="stat-value" id="ad-total-farmers">-</div></div>
+  <div class="stat-card stat-accent"><div class="stat-label">Active Buyers</div><div class="stat-value" id="ad-total-buyers">-</div></div>
+  <div class="stat-card stat-success"><div class="stat-label">Active Transporters</div><div class="stat-value" id="ad-total-transporters">-</div></div>
+  <div class="stat-card"><div class="stat-label">Total Harvests</div><div class="stat-value" id="ad-total-harvests">-</div></div>
+  <div class="stat-card"><div class="stat-label">Open Demands</div><div class="stat-value" id="ad-open-demands">-</div></div>
+</div>
+<section class="card">
+  <div class="card-header"><h2>Platform Metrics</h2><button id="refresh-dashboard" class="btn btn-sm btn-outline">Refresh</button></div>
+  <div id="dashboard-status" class="form-message">Click refresh to load metrics.</div>
+  <div class="table-wrapper"><table id="dashboard-table" hidden><tbody></tbody></table></div>
+</section>
+{% block page_js %}<script src="/static/js/pages/admin.js"></script>{% endblock %}
+{% endblock %}

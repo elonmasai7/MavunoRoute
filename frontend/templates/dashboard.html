@@ -1,19 +1,20 @@
-{% extends "base.html" %}
+{% extends "layouts/admin.html" %}
+{% block title %}Dashboard - MavunoRoute AI{% endblock %}
 {% block content %}
 <section class="hero">
   <h1>Operations Dashboard</h1>
-  <p>Live metrics from `/api/v1/reports/dashboard`.</p>
+  <p>Live metrics from <code>/api/v1/reports/dashboard</code>.</p>
   <div class="cta-row">
-    <button id="refresh-dashboard" class="btn primary" type="button">Refresh Metrics</button>
+    <button id="refresh-dashboard" class="btn btn-primary" type="button">Refresh Metrics</button>
   </div>
 </section>
 
-<section class="card" style="margin-top: 1rem;">
+<section class="card">
   <h2>Platform Metrics</h2>
   <div id="dashboard-status" class="form-message">Click refresh to load metrics.</div>
-  <table class="metrics-table" id="dashboard-table" hidden>
-    <tbody></tbody>
-  </table>
+  <div class="table-wrapper">
+    <table class="metrics-table" id="dashboard-table" hidden><tbody></tbody></table>
+  </div>
 </section>
 
 <script src="/static/js/app.js"></script>

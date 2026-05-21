@@ -1,0 +1,28 @@
+{% extends "layouts/admin.html" %}
+{% block title %}Users - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header"><h2>All Users</h2></div>
+  <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Created</th><th></th></tr></thead>
+  <tbody id="users-list"><tr class="table-empty"><td colspan="6"><p>Loading users...</p></td></tr></tbody></table></div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var data = await apiRequest("/api/v1/admin/users?page=1&per_page=50");
+    var items = data.items || data || [];
+    var tbody = document.getElementById("users-list");
+    tbody.innerHTML = "";
+    if (items.length === 0) {
+      tbody.innerHTML = '<tr class="table-empty"><td colspan="6"><p>No users found.</p></td></tr>';
+    } else {
+      items.forEach(function(u) {
+        tbody.innerHTML += '<tr><td>'+u.full_name+'</td><td>'+u.email+'</td><td><span class="badge badge-primary">'+u.role+'</span></td><td><span class="badge badge-'+(u.is_active?'success':'danger')+'">'+(u.is_active?'ACTIVE':'INACTIVE')+'</span></td><td>'+formatDate(u.created_at)+'</td><td><a href="/admin/users/'+u.id+'" class="btn btn-sm btn-outline">View</a></td></tr>';
+      });
+    }
+  } catch(e) {
+    document.getElementById("users-list").innerHTML = '<tr class="table-empty"><td colspan="6"><p>Error loading users.</p></td></tr>';
+  }
+});
+</script>
+{% endblock %}

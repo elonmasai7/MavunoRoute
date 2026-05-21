@@ -1,0 +1,37 @@
+<nav class="sidebar">
+  <div class="sidebar-header">
+    <a href="/dashboard" class="sidebar-logo">MavunoRoute</a>
+  </div>
+  <div class="sidebar-user">
+    <span class="sidebar-user-name">{{ user.full_name }}</span>
+    <span class="sidebar-user-role">{{ user.role }}</span>
+  </div>
+  <ul class="sidebar-nav">
+    <li class="nav-item {% if active_page == 'buyer_dashboard' %}active{% endif %}">
+      <a href="/buyer/dashboard">Dashboard</a>
+    </li>
+    <li class="nav-item {% if active_page == 'buyer_demands' %}active{% endif %}">
+      <a href="/buyer/demands">Demand Requests</a>
+    </li>
+    <li class="nav-item {% if active_page == 'buyer_demands_create' %}active{% endif %}">
+      <a href="/buyer/demands/create">Create Demand</a>
+    </li>
+    <li class="nav-item {% if active_page == 'buyer_matches' %}active{% endif %}">
+      <a href="/buyer/matches">Matches</a>
+    </li>
+    <li class="nav-item {% if active_page == 'buyer_orders' %}active{% endif %}">
+      <a href="/buyer/orders">Orders</a>
+    </li>
+    <li class="nav-item {% if active_page == 'buyer_payments' %}active{% endif %}">
+      <a href="/buyer/payments">Payments</a>
+    </li>
+    <li class="nav-item {% if active_page == 'buyer_deliveries' %}active{% endif %}">
+      <a href="/buyer/deliveries">Deliveries</a>
+    </li>
+  </ul>
+  <div class="sidebar-footer">
+    <a href="/profile">Profile</a>
+    <a href="/settings">Settings</a>
+    <a href="/logout" class="text-danger">Logout</a>
+  </div>
+</nav>

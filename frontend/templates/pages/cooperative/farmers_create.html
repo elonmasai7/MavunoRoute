@@ -1,0 +1,20 @@
+{% extends "layouts/cooperative.html" %}
+{% block title %}Add Farmer - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="form-card">
+  <h2>Register Farmer</h2>
+  <form id="farmer-form">
+    <label>Full Name <input type="text" name="full_name" required></label>
+    <label>Email <input type="email" name="email" required></label>
+    <label>Phone Number <input type="text" name="phone_number" required></label>
+    <label>Password <input type="password" name="password" required minlength="8"></label>
+    <div class="form-row">
+      <label>Latitude <input type="number" name="latitude" step="0.000001"></label>
+      <label>Longitude <input type="number" name="longitude" step="0.000001"></label>
+    </div>
+    <p class="form-message" id="farmer-message"></p>
+    <div class="form-actions"><button type="submit" class="btn btn-primary">Register Farmer</button><a href="/cooperative/farmers" class="btn">Cancel</a></div>
+  </form>
+</section>
+{% endblock %}
+{% block page_js %}<script src="/static/js/pages/cooperative.js"></script>{% endblock %}

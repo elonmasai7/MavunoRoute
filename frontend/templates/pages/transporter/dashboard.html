@@ -1,0 +1,16 @@
+{% extends "layouts/transporter.html" %}
+{% block title %}Transporter Dashboard - MavunoRoute AI{% endblock %}
+{% block content %}
+<div class="dashboard-grid">
+  <div class="stat-card stat-primary"><div class="stat-label">Active Jobs</div><div class="stat-value" id="tstat-jobs">-</div></div>
+  <div class="stat-card stat-info"><div class="stat-label">My Vehicles</div><div class="stat-value" id="tstat-vehicles">-</div></div>
+  <div class="stat-card stat-accent"><div class="stat-label">Active Routes</div><div class="stat-value" id="tstat-routes">-</div></div>
+  <div class="stat-card stat-success"><div class="stat-label">Total Earnings</div><div class="stat-value" id="tstat-earnings">-</div></div>
+</div>
+<section class="card">
+  <div class="card-header"><h2>Active Jobs</h2><a href="/transporter/jobs" class="btn btn-sm btn-outline">View All</a></div>
+  <div class="table-wrapper"><table><thead><tr><th>Job ID</th><th>Route</th><th>Status</th><th>Date</th><th></th></tr></thead>
+  <tbody id="active-jobs"><tr class="table-empty"><td colspan="5"><p>No active jobs.</p></td></tr></tbody></table></div>
+</section>
+{% endblock %}
+{% block page_js %}<script src="/static/js/pages/transporter.js"></script>{% endblock %}

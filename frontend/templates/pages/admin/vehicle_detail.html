@@ -1,0 +1,23 @@
+{% extends "layouts/admin.html" %}
+{% block title %}Vehicle Detail - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header"><h2>Vehicle {{ vehicle_id }}</h2></div>
+  <div class="detail-grid"><div class="detail-section"><h3>Details</h3><div id="vehicle-detail"><p class="text-muted">Loading...</p></div></div></div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var v = await apiRequest("/api/v1/vehicles/{{ vehicle_id }}");
+    var html = '<div class="detail-row"><span class="detail-label">Registration</span><span class="detail-value">'+v.registration_number+'</span></div>' +
+      '<div class="detail-row"><span class="detail-label">Type</span><span class="detail-value">'+v.vehicle_type+'</span></div>' +
+      '<div class="detail-row"><span class="detail-label">Capacity</span><span class="detail-value">'+v.capacity_kg+' kg</span></div>' +
+      '<div class="detail-row"><span class="detail-label">Transporter</span><span class="detail-value">'+(v.transporter_name||v.transporter_id||'-')+'</span></div>' +
+      '<div class="detail-row"><span class="detail-label">Status</span><span class="detail-value"><span class="badge badge-'+v.status+'">'+v.status+'</span></span></div>';
+    document.getElementById("vehicle-detail").innerHTML = html;
+  } catch(e) {
+    document.getElementById("vehicle-detail").innerHTML = '<p class="text-danger">Error loading vehicle.</p>';
+  }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,58 @@
+.dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.stat-card { background: var(--color-white); border-radius: var(--radius-lg); padding: 1.25rem; box-shadow: var(--shadow-sm); }
+.stat-card .stat-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-gray-500); font-weight: 600; margin-bottom: 0.25rem; }
+.stat-card .stat-value { font-size: 1.75rem; font-weight: 700; color: var(--color-gray-800); }
+.stat-card .stat-change { font-size: 0.8rem; margin-top: 0.25rem; color: var(--color-gray-500); }
+.stat-card.stat-primary { border-left: 4px solid var(--color-primary); }
+.stat-card.stat-accent { border-left: 4px solid var(--color-accent); }
+.stat-card.stat-info { border-left: 4px solid var(--color-info); }
+.stat-card.stat-success { border-left: 4px solid var(--color-success); }
+
+.card { background: var(--color-white); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-sm); margin-bottom: 1rem; }
+.card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.card-header h2 { margin-bottom: 0; }
+.card-actions { display: flex; gap: 0.5rem; }
+
+.hero { text-align: center; padding: 3rem 1rem; }
+.hero h1 { font-size: 2.25rem; margin-bottom: 0.75rem; }
+.hero p { font-size: 1.1rem; color: var(--color-gray-500); max-width: 600px; margin: 0 auto 1.5rem; }
+.cta-row { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+
+.breadcrumb { display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: var(--color-gray-500); margin-bottom: 1rem; }
+.breadcrumb a { color: var(--color-gray-500); }
+.breadcrumb a:hover { color: var(--color-primary); }
+.breadcrumb-sep { color: var(--color-gray-400); }
+.breadcrumb-current { color: var(--color-gray-700); font-weight: 500; }
+
+.flash-messages { position: fixed; top: 1rem; right: 1rem; z-index: 200; display: flex; flex-direction: column; gap: 0.5rem; }
+.flash { padding: 0.75rem 1rem; border-radius: var(--radius-md); font-size: 0.9rem; box-shadow: var(--shadow-md); animation: flashIn 0.3s ease; }
+.flash-success { background: #eafaf1; color: var(--color-success); border: 1px solid var(--color-success); }
+.flash-error { background: #fdf0ef; color: var(--color-danger); border: 1px solid var(--color-danger); }
+.flash-info { background: #eaf2fa; color: var(--color-info); border: 1px solid var(--color-info); }
+@keyframes flashIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+.mobile-nav { position: fixed; inset: 0; background: var(--color-white); z-index: 300; display: flex; flex-direction: column; }
+.mobile-nav-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; border-bottom: 1px solid var(--color-gray-200); }
+.mobile-nav-title { font-weight: 600; font-size: 1.1rem; }
+.mobile-nav-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+.mobile-nav-user { padding: 0.75rem 1.25rem; border-bottom: 1px solid var(--color-gray-200); }
+.mobile-nav-name { font-weight: 600; }
+.mobile-nav-role { font-size: 0.8rem; color: var(--color-gray-500); }
+.mobile-nav-links { list-style: none; flex: 1; overflow-y: auto; }
+.mobile-nav-links li a { display: block; padding: 0.75rem 1.25rem; border-bottom: 1px solid var(--color-gray-100); color: var(--color-gray-700); }
+.mobile-nav-links li a:hover { background: var(--color-gray-50); }
+
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.detail-section { margin-bottom: 1.5rem; }
+.detail-section h3 { border-bottom: 1px solid var(--color-gray-200); padding-bottom: 0.5rem; margin-bottom: 0.75rem; }
+.detail-row { display: flex; padding: 0.4rem 0; }
+.detail-label { width: 160px; font-size: 0.85rem; color: var(--color-gray-500); flex-shrink: 0; }
+.detail-value { font-size: 0.9rem; color: var(--color-gray-800); }
+
+@media (max-width: 768px) {
+  .dashboard-grid { grid-template-columns: 1fr 1fr; }
+  .detail-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .dashboard-grid { grid-template-columns: 1fr; }
+}

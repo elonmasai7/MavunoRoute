@@ -1,0 +1,22 @@
+{% extends "layouts/cooperative.html" %}
+{% block title %}Cooperative Dashboard - MavunoRoute AI{% endblock %}
+{% block content %}
+<div class="dashboard-grid">
+  <div class="stat-card stat-primary"><div class="stat-label">Member Farmers</div><div class="stat-value" id="coop-farmers">-</div></div>
+  <div class="stat-card stat-success"><div class="stat-label">Total Harvests</div><div class="stat-value" id="coop-harvests">-</div></div>
+  <div class="stat-card stat-accent"><div class="stat-label">Aggregate Qty</div><div class="stat-value" id="coop-qty">-</div></div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var data = await apiRequest("/api/v1/cooperatives/me");
+    if (data.farmer_count !== undefined) document.getElementById("coop-farmers").textContent = data.farmer_count;
+  } catch(e) {}
+  try {
+    var h = await apiRequest("/api/v1/harvest-batches?page=1&per_page=1&limit=0");
+    document.getElementById("coop-harvests").textContent = h.total || '-';
+  } catch(e) {}
+});
+</script>
+{% endblock %}
+{% block page_js %}<script src="/static/js/pages/cooperative.js"></script>{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "layouts/cold_hub.html" %}
+{% block title %}Capacity - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <h2>Cold Hub Capacity</h2>
+  <div id="capacity-detail"><p class="text-muted">Loading capacity data...</p></div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var data = await apiRequest("/api/v1/cold-hubs/me");
+    var html = '<div class="dashboard-grid"><div class="stat-card stat-primary"><div class="stat-label">Total Capacity</div><div class="stat-value">'+(data.total_capacity_kg||'-')+' kg</div></div>' +
+      '<div class="stat-card stat-info"><div class="stat-label">Used Capacity</div><div class="stat-value">'+(data.used_capacity_kg||'0')+' kg</div></div>' +
+      '<div class="stat-card stat-success"><div class="stat-label">Available</div><div class="stat-value">'+((data.total_capacity_kg||0)-(data.used_capacity_kg||0))+' kg</div></div></div>';
+    document.getElementById("capacity-detail").innerHTML = html;
+  } catch(e) {
+    document.getElementById("capacity-detail").innerHTML = '<p class="text-danger">Error loading capacity.</p>';
+  }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "layouts/admin.html" %}
+{% block title %}Settings - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <h2>System Settings</h2>
+  <p class="text-muted">Platform configuration options (read-only for now).</p>
+  <form>
+    <label>App Name <input type="text" value="MavunoRoute AI" disabled></label>
+    <label>Environment <input type="text" value="Development" disabled></label>
+    <label>API Prefix <input type="text" value="/api/v1" disabled></label>
+    <div class="form-actions"><button type="submit" class="btn btn-primary" disabled>Save Changes</button></div>
+  </form>
+</section>
+{% endblock %}

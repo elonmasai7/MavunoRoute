@@ -1,0 +1,28 @@
+{% extends "layouts/admin.html" %}
+{% block title %}System Health - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header"><h2>System Health</h2><button id="refresh-health" class="btn btn-sm btn-outline">Refresh</button></div>
+  <div id="health-data"><p class="text-muted">Loading health data...</p></div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  async function loadHealth() {
+    try {
+      var h = await apiRequest("/api/v1/health");
+      var html = '<div class="dashboard-grid">' +
+        '<div class="stat-card stat-success"><div class="stat-label">Status</div><div class="stat-value">'+(h.status||'OK')+'</div></div>' +
+        '<div class="stat-card stat-info"><div class="stat-label">Database</div><div class="stat-value">'+(h.database||'OK')+'</div></div>' +
+        '<div class="stat-card"><div class="stat-label">Redis</div><div class="stat-value">'+(h.redis||'N/A')+'</div></div>' +
+        '<div class="stat-card"><div class="stat-label">Uptime</div><div class="stat-value">'+(h.uptime_seconds ? h.uptime_seconds+'s' : '-')+'</div></div>' +
+        '</div>';
+      document.getElementById("health-data").innerHTML = html;
+    } catch(e) {
+      document.getElementById("health-data").innerHTML = '<p class="text-danger">Error loading health data.</p>';
+    }
+  }
+  loadHealth();
+  document.getElementById("refresh-health")?.addEventListener("click", loadHealth);
+});
+</script>
+{% endblock %}

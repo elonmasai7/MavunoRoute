@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block body_class %}public-layout{% endblock %}
+{% block body %}
+  {% include "partials/flash_messages.html" %}
+  <nav class="public-nav">
+    <div class="nav-inner">
+      <a href="/" class="logo">MavunoRoute AI</a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/login" class="btn btn-sm btn-outline">Login</a>
+        <a href="/register" class="btn btn-sm btn-primary">Register</a>
+      </div>
+      <button class="mobile-menu-toggle" aria-label="Menu">&#9776;</button>
+    </div>
+  </nav>
+  <main class="public-main">
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="public-footer">
+    <div class="footer-inner">
+      <p>&copy; 2026 MavunoRoute AI. All rights reserved.</p>
+    </div>
+  </footer>
+  <script src="/static/js/pages/public.js"></script>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "layouts/buyer.html" %}
+{% block title %}Matches - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header"><h2>Available Matches</h2></div>
+  <div class="table-wrapper"><table><thead><tr><th>Demand</th><th>Harvest</th><th>Farmer</th><th>Quantity</th><th>Price/kg</th><th>Score</th><th></th></tr></thead>
+  <tbody id="matches-list"><tr class="table-empty"><td colspan="7"><p>No matches found. Create a demand first, then match.</p></td></tr></tbody></table></div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var data = await apiRequest("/api/v1/matching/matches?page=1&per_page=20");
+    var items = data.items || data || [];
+    var tbody = document.getElementById("matches-list");
+    tbody.innerHTML = "";
+    if (items.length === 0) {
+      tbody.innerHTML = '<tr class="table-empty"><td colspan="7"><p>No matches found.</p></td></tr>';
+    } else {
+      items.forEach(function(m) {
+        tbody.innerHTML += '<tr><td>'+(m.demand_id||'-')+'</td><td>'+(m.harvest_id||'-')+'</td><td>'+(m.farmer_name||'-')+'</td><td>'+m.quantity_kg+' kg</td><td>'+formatCurrency(m.price_per_kg)+'</td><td>'+(m.score||'-')+'</td><td><a href="#" class="btn btn-sm btn-primary">Accept</a></td></tr>';
+      });
+    }
+  } catch(e) {
+    document.getElementById("matches-list").innerHTML = '<tr class="table-empty"><td colspan="7"><p>Error loading matches.</p></td></tr>';
+  }
+});
+</script>
+{% endblock %}

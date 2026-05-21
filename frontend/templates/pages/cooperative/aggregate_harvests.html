@@ -1,0 +1,22 @@
+{% extends "layouts/cooperative.html" %}
+{% block title %}Aggregate Harvests - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <h2>Aggregate Harvests</h2>
+  <div id="aggregate-data"><p class="text-muted">Loading aggregate data...</p></div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    var data = await apiRequest("/api/v1/cooperatives/me");
+    var html = '<div class="dashboard-grid">' +
+      '<div class="stat-card stat-primary"><div class="stat-label">Farmer Count</div><div class="stat-value">'+(data.farmer_count||'-')+'</div></div>' +
+      '<div class="stat-card stat-success"><div class="stat-label">Active Harvests</div><div class="stat-value">'+(data.active_harvest_count||'-')+'</div></div>' +
+      '</div>';
+    document.getElementById("aggregate-data").innerHTML = html;
+  } catch(e) {
+    document.getElementById("aggregate-data").innerHTML = '<p class="text-danger">Error loading aggregate data.</p>';
+  }
+});
+</script>
+{% endblock %}
