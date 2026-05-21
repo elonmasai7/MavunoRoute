@@ -4,7 +4,7 @@ services:
     runtime: image
     repo: https://github.com/elonmasai7/MavunoRoute.git
     plan: starter
-    dockerfilePath: ./backend/Dockerfile
+    dockerfilePath: ./Dockerfile
     envVars:
       - key: APP_ENV
         value: production
