@@ -8,7 +8,7 @@
 <script>
 document.addEventListener("DOMContentLoaded", async function() {
   try {
-    var f = await apiRequest("/api/v1/admin/farmers/{{ farmer_id }}");
+    var f = await apiRequest("/api/v1/farmers/{{ farmer_id }}");
     var html = '<div class="detail-row"><span class="detail-label">Name</span><span class="detail-value">'+(f.full_name||'-')+'</span></div>' +
       '<div class="detail-row"><span class="detail-label">Email</span><span class="detail-value">'+(f.email||'-')+'</span></div>' +
       '<div class="detail-row"><span class="detail-label">Phone</span><span class="detail-value">'+(f.phone_number||'-')+'</span></div>' +

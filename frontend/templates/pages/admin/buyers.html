@@ -9,7 +9,7 @@
 <script>
 document.addEventListener("DOMContentLoaded", async function() {
   try {
-    var data = await apiRequest("/api/v1/admin/buyers?page=1&per_page=50");
+    var data = await apiRequest("/api/v1/buyers?page=1&per_page=50");
     var items = data.items || data || [];
     var tbody = document.getElementById("buyers-list");
     tbody.innerHTML = "";

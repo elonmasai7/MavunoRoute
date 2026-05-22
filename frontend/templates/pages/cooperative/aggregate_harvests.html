@@ -8,10 +8,14 @@
 <script>
 document.addEventListener("DOMContentLoaded", async function() {
   try {
-    var data = await apiRequest("/api/v1/cooperatives/me");
+    var data = await fetchFirstFromList("/api/v1/cooperatives?page=1&per_page=1");
+    if (!data || !data.id) {
+      throw new Error("No cooperative profile found");
+    }
+    var reports = await apiRequest(`/api/v1/cooperatives/${data.id}/reports`);
     var html = '<div class="dashboard-grid">' +
-      '<div class="stat-card stat-primary"><div class="stat-label">Farmer Count</div><div class="stat-value">'+(data.farmer_count||'-')+'</div></div>' +
-      '<div class="stat-card stat-success"><div class="stat-label">Active Harvests</div><div class="stat-value">'+(data.active_harvest_count||'-')+'</div></div>' +
+      '<div class="stat-card stat-primary"><div class="stat-label">Cooperative</div><div class="stat-value">'+(data.name||'-')+'</div></div>' +
+      '<div class="stat-card stat-success"><div class="stat-label">Total Farmers</div><div class="stat-value">'+(reports.total_farmers||'-')+'</div></div>' +
       '</div>';
     document.getElementById("aggregate-data").innerHTML = html;
   } catch(e) {

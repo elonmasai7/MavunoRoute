@@ -8,7 +8,10 @@
 <script>
 document.addEventListener("DOMContentLoaded", async function() {
   try {
-    var data = await apiRequest("/api/v1/cold-hubs/me");
+    var data = await fetchFirstFromList("/api/v1/cold-hubs?page=1&per_page=1");
+    if (!data) {
+      throw new Error("No cold hub profile found");
+    }
     var html = '<div class="dashboard-grid"><div class="stat-card stat-primary"><div class="stat-label">Total Capacity</div><div class="stat-value">'+(data.total_capacity_kg||'-')+' kg</div></div>' +
       '<div class="stat-card stat-info"><div class="stat-label">Used Capacity</div><div class="stat-value">'+(data.used_capacity_kg||'0')+' kg</div></div>' +
       '<div class="stat-card stat-success"><div class="stat-label">Available</div><div class="stat-value">'+((data.total_capacity_kg||0)-(data.used_capacity_kg||0))+' kg</div></div></div>';

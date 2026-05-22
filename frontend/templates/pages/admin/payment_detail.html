@@ -8,7 +8,7 @@
 <script>
 document.addEventListener("DOMContentLoaded", async function() {
   try {
-    var p = await apiRequest("/api/v1/admin/payments/{{ payment_id }}");
+    var p = await apiRequest("/api/v1/payments/{{ payment_id }}");
     var html = '<div class="detail-row"><span class="detail-label">Amount</span><span class="detail-value">'+formatCurrency(p.amount)+'</span></div>' +
       '<div class="detail-row"><span class="detail-label">Method</span><span class="detail-value">'+(p.method||'-')+'</span></div>' +
       '<div class="detail-row"><span class="detail-label">Status</span><span class="detail-value"><span class="badge badge-'+(p.status==='COMPLETED'?'success':p.status==='PENDING'?'warning':'danger')+'">'+p.status+'</span></span></div>' +

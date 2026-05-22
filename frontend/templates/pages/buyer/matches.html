@@ -9,15 +9,15 @@
 <script>
 document.addEventListener("DOMContentLoaded", async function() {
   try {
-    var data = await apiRequest("/api/v1/matching/matches?page=1&per_page=20");
-    var items = data.items || data || [];
+    var data = await apiRequest("/api/v1/matching/recommendations");
+    var items = (data && data.matches) ? data.matches : [];
     var tbody = document.getElementById("matches-list");
     tbody.innerHTML = "";
     if (items.length === 0) {
       tbody.innerHTML = '<tr class="table-empty"><td colspan="7"><p>No matches found.</p></td></tr>';
     } else {
       items.forEach(function(m) {
-        tbody.innerHTML += '<tr><td>'+(m.demand_id||'-')+'</td><td>'+(m.harvest_id||'-')+'</td><td>'+(m.farmer_name||'-')+'</td><td>'+m.quantity_kg+' kg</td><td>'+formatCurrency(m.price_per_kg)+'</td><td>'+(m.score||'-')+'</td><td><a href="#" class="btn btn-sm btn-primary">Accept</a></td></tr>';
+        tbody.innerHTML += '<tr><td>'+(m.demand_id||'-')+'</td><td>'+(m.harvest_id||'-')+'</td><td>'+(m.farmer_name||'-')+'</td><td>'+(m.quantity_kg||0)+' kg</td><td>'+formatCurrency(m.price_per_kg || 0)+'</td><td>'+(m.score||'-')+'</td><td><a href="/buyer/matches" class="btn btn-sm btn-primary">Review</a></td></tr>';
       });
     }
   } catch(e) {

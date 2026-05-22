@@ -9,15 +9,15 @@
 <script>
 document.addEventListener("DOMContentLoaded", async function() {
   try {
-    var data = await apiRequest("/api/v1/matching/matches?page=1&per_page=20&status=ACCEPTED");
-    var items = data.items || data || [];
+    var data = await apiRequest("/api/v1/buyer-demands?page=1&per_page=20");
+    var items = data || [];
     var tbody = document.getElementById("orders-list");
     tbody.innerHTML = "";
     if (items.length === 0) {
       tbody.innerHTML = '<tr class="table-empty"><td colspan="7"><p>No orders placed yet.</p></td></tr>';
     } else {
       items.forEach(function(m) {
-        tbody.innerHTML += '<tr><td>'+(m.id.slice(0,8))+'</td><td>'+(m.harvest_id||'-')+'</td><td>'+m.quantity_kg+' kg</td><td>'+formatCurrency(m.quantity_kg * m.price_per_kg)+'</td><td><span class="badge badge-info">'+m.status+'</span></td><td>'+formatDate(m.created_at)+'</td><td><a href="/buyer/orders/'+m.id+'" class="btn btn-sm btn-outline">View</a></td></tr>';
+        tbody.innerHTML += '<tr><td>'+((m.id || '').slice(0,8))+'</td><td>'+(m.crop_id||'-')+'</td><td>'+(m.quantity_kg||0)+' kg</td><td>'+formatCurrency((m.quantity_kg || 0) * (m.max_price_per_kg || 0))+'</td><td><span class="badge badge-info">'+(m.status||'OPEN')+'</span></td><td>'+formatDate(m.created_at)+'</td><td><a href="/buyer/orders/'+m.id+'" class="btn btn-sm btn-outline">View</a></td></tr>';
       });
     }
   } catch(e) {

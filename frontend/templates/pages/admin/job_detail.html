@@ -8,7 +8,7 @@
 <script>
 document.addEventListener("DOMContentLoaded", async function() {
   try {
-    var j = await apiRequest("/api/v1/admin/transport-jobs/{{ job_id }}");
+    var j = await apiRequest("/api/v1/transport-jobs/{{ job_id }}");
     var html = '<div class="detail-row"><span class="detail-label">Route</span><span class="detail-value">'+(j.route_id||'-')+'</span></div>' +
       '<div class="detail-row"><span class="detail-label">Transporter</span><span class="detail-value">'+(j.transporter_name||j.transporter_id||'-')+'</span></div>' +
       '<div class="detail-row"><span class="detail-label">Vehicle</span><span class="detail-value">'+(j.vehicle_id||'-')+'</span></div>' +

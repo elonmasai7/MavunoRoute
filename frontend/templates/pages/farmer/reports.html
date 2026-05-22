@@ -12,10 +12,15 @@
 <script>
 document.addEventListener("DOMContentLoaded", async function() {
   try {
-    var data = await apiRequest("/api/v1/reports/farmer");
-    if (data.total_harvests !== undefined) document.getElementById("report-total-harvests").textContent = data.total_harvests;
-    if (data.total_quantity_kg !== undefined) document.getElementById("report-total-qty").textContent = data.total_quantity_kg + ' kg';
-    if (data.avg_price_per_kg !== undefined) document.getElementById("report-avg-price").textContent = formatCurrency(data.avg_price_per_kg);
+    var farmers = await apiRequest("/api/v1/farmers?page=1&per_page=1");
+    var farmer = Array.isArray(farmers) ? farmers[0] : null;
+    if (farmer && farmer.id) {
+      var perf = await apiRequest(`/api/v1/farmers/${farmer.id}/performance`);
+      if (perf.total_batches !== undefined) document.getElementById("report-total-harvests").textContent = perf.total_batches;
+    }
+    var dashboard = await apiRequest("/api/v1/reports/dashboard");
+    if (dashboard.total_harvest_quantity_kg !== undefined) document.getElementById("report-total-qty").textContent = dashboard.total_harvest_quantity_kg + ' kg';
+    if (dashboard.average_harvest_price_per_kg !== undefined) document.getElementById("report-avg-price").textContent = formatCurrency(dashboard.average_harvest_price_per_kg);
   } catch(e) {}
 });
 </script>

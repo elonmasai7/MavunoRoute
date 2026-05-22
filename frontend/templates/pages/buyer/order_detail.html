@@ -8,11 +8,11 @@
 <script>
 document.addEventListener("DOMContentLoaded", async function() {
   try {
-    var o = await apiRequest("/api/v1/matching/matches/{{ order_id }}");
+    var o = await apiRequest("/api/v1/buyer-demands/{{ order_id }}");
     var html = '<div class="detail-row"><span class="detail-label">Harvest</span><span class="detail-value">'+(o.harvest_id||'-')+'</span></div>' +
       '<div class="detail-row"><span class="detail-label">Quantity</span><span class="detail-value">'+o.quantity_kg+' kg</span></div>' +
-      '<div class="detail-row"><span class="detail-label">Price/kg</span><span class="detail-value">'+formatCurrency(o.price_per_kg)+'</span></div>' +
-      '<div class="detail-row"><span class="detail-label">Total</span><span class="detail-value">'+formatCurrency(o.quantity_kg * o.price_per_kg)+'</span></div>' +
+      '<div class="detail-row"><span class="detail-label">Max Price/kg</span><span class="detail-value">'+formatCurrency(o.max_price_per_kg || 0)+'</span></div>' +
+      '<div class="detail-row"><span class="detail-label">Total</span><span class="detail-value">'+formatCurrency((o.quantity_kg || 0) * (o.max_price_per_kg || 0))+'</span></div>' +
       '<div class="detail-row"><span class="detail-label">Status</span><span class="detail-value"><span class="badge badge-info">'+o.status+'</span></span></div>';
     document.getElementById("order-detail").innerHTML = html;
   } catch(e) {

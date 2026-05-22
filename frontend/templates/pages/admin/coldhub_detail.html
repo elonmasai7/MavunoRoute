@@ -8,7 +8,7 @@
 <script>
 document.addEventListener("DOMContentLoaded", async function() {
   try {
-    var c = await apiRequest("/api/v1/admin/cold-hubs/{{ hub_id }}");
+    var c = await apiRequest("/api/v1/cold-hubs/{{ hub_id }}");
     var html = '<div class="detail-row"><span class="detail-label">Name</span><span class="detail-value">'+(c.name||'-')+'</span></div>' +
       '<div class="detail-row"><span class="detail-label">Location</span><span class="detail-value">'+(c.location||'-')+'</span></div>' +
       '<div class="detail-row"><span class="detail-label">Total Capacity</span><span class="detail-value">'+(c.total_capacity_kg||'-')+' kg</span></div>' +
