@@ -1,223 +1,170 @@
 # MavunoRoute AI
 
-> Kenya-first agri-logistics operating system — coordinating perishable produce movement from farms to markets with real operational data, secure workflows, and route intelligence.
+MavunoRoute AI is a Kenya-first, multi-role agri-logistics operating platform for coordinating perishable produce from farms to buyers through routing, transport execution, cold-chain visibility, and payments.
 
-## Status
+The system is built as a production-oriented modular monolith with strict role-based access control, API-first domain services, and server-rendered multi-page workflows.
 
-| Component | Status |
-|-----------|--------|
-| Backend API (FastAPI) | ✅ Complete — 50+ route groups, 22 services, all providers |
-| Web Frontend (Jinja2) | ✅ Complete — 80 web routes, 100+ templates, 8 role layouts |
-| Database (PostgreSQL) | ✅ Complete — 20+ domain tables, Alembic migration |
-| Auth & Security | ✅ Complete — JWT, RBAC, rate limiting, audit logs, security headers |
-| Integrations | ✅ Abstracted — OSRM routing, OpenWeather, M-Pesa, SMS/Email, S3 |
-| Background Jobs | ✅ Scaﬀolded — Celery workers for routes, risk, notifications, reports |
-| Tests | ✅ 17 passing — e2e MVP flow test, smoke tests, real DB fixtures |
+## Platform Status
 
-## Architecture
+| Area | Status |
+|---|---|
+| Backend API | Production-structured (FastAPI, service/repository layers) |
+| Web Platform | Multi-page role-based UI (82 web routes) |
+| Security | JWT auth, RBAC, rate limiting, audit logging |
+| Data Layer | PostgreSQL + PostGIS-ready models, Alembic migrations |
+| Async Jobs | Celery scaffolding (routes, notifications, risk, reports) |
+| Test Suite | 23 passing tests (API + route/permission matrix) |
 
+## Core Capabilities
+
+- Multi-role workflows: Farmer, Buyer, Transporter, Cold Hub Operator, Cooperative Admin, Ops/Admin.
+- Harvest-to-demand logistics lifecycle with route and job orchestration.
+- Cold-chain observability through temperature/breach tracking.
+- Payments and M-Pesa integration abstraction.
+- Centralized response envelope, pagination, and access enforcement.
+- Professional multi-page web UX with role dashboards and isolated modules.
+
+## Architecture Overview
+
+```text
+Browser (Jinja2 + Vanilla JS)
+        |
+        v
+FastAPI App
+  - API routes (/api/v1/*)
+  - Web routes (role-based pages)
+  - RBAC + auth dependencies
+        |
+        v
+PostgreSQL / PostGIS   Redis
+        |
+        v
+Celery Workers (background processing)
 ```
-┌─────────────┐     ┌──────────────┐     ┌─────────────┐
-│   Browser   │────▶│  FastAPI App │────▶│ PostgreSQL  │
-│ (Jinja2 +   │     │  + Jinja2    │     │  + PostGIS  │
-│  minimal JS)│◀────│  Templates   │◀────│  + Redis     │
-└─────────────┘     ├──────────────┤     └─────────────┘
-                    │  Celery      │
-                    │  Workers     │
-                    ├──────────────┤
-                    │  Providers   │
-                    │  (OSRM, MPesa│
-                    │   OpenWeather│
-                    │   SMS, Email)│
-                    └──────────────┘
-```
 
-## Tech Stack
+## Technology Stack
 
-- **Backend**: Python 3.12, FastAPI, SQLAlchemy 2.0, Alembic, Pydantic v2
-- **Frontend**: Jinja2 server-rendered templates, vanilla JS, modular CSS
-- **Database**: PostgreSQL 16 + PostGIS, Redis 7
-- **Jobs**: Celery + Redis broker
-- **Auth**: JWT access/refresh tokens, httpOnly cookie + Authorization header
-- **Integrations**: OSRM (routing), OpenWeather (weather), M-Pesa (payments), SMTP/SMS (notifications), S3/Local (storage)
-- **Infra**: Docker Compose, Nginx reverse proxy
+- Backend: Python 3.12, FastAPI, SQLAlchemy 2.x, Alembic, Pydantic v2
+- Frontend: Jinja2 templates, modular CSS, minimal vanilla JavaScript
+- Data: PostgreSQL 16, PostGIS-ready schema, Redis 7
+- Async: Celery
+- Infra: Docker Compose, Nginx (local), Render-ready Docker setup
 
-## Repository Layout
+## Repository Structure
 
-```
+```text
 backend/
-├── app/
-│   ├── api/v1/        # REST API route groups (50+ endpoints)
-│   ├── web/           # Server-rendered web routes (80 routes)
-│   │   ├── public.py
-│   │   ├── farmer.py
-│   │   ├── buyer.py
-│   │   ├── transporter.py
-│   │   ├── cold_hub.py
-│   │   ├── cooperative.py
-│   │   ├── admin.py
-│   │   ├── shared.py
-│   │   └── dependencies.py   # Web auth middleware
-│   ├── models/        # SQLAlchemy ORM models (20+ tables)
-│   ├── schemas/       # Pydantic request/response schemas
-│   ├── services/      # Domain services (22 services)
-│   ├── repositories/  # Data access layer
-│   ├── providers/     # External integration abstractions
-│   ├── jobs/          # Celery task definitions
-│   └── utils/         # Permissions, response envelope, etc.
-├── alembic/           # Database migrations
-└── tests/             # pytest suite (real DB, e2e flow)
+  app/
+    api/v1/           # REST endpoints
+    web/              # Server-rendered page routes
+    models/           # SQLAlchemy models
+    schemas/          # Pydantic contracts
+    services/         # Domain services
+    repositories/     # Data access
+    providers/        # External integration abstractions
+    middleware.py     # Security + rate limit middleware
+    dependencies.py   # Auth/permission dependencies
+  alembic/            # Migrations
+  tests/              # API + web route/permission tests
+
 frontend/
-├── templates/
-│   ├── base.html                 # Root template
-│   ├── layouts/                  # Role-based layouts (8)
-│   │   ├── public.html
-│   │   ├── auth.html
-│   │   ├── farmer.html
-│   │   ├── buyer.html
-│   │   ├── transporter.html
-│   │   ├── cold_hub.html
-│   │   ├── cooperative.html
-│   │   └── admin.html
-│   ├── partials/                 # Reusable components
-│   │   ├── flash_messages.html
-│   │   ├── header.html
-│   │   ├── breadcrumb.html
-│   │   ├── mobile_nav.html
-│   │   └── sidebar_*.html        # 7 role-specific sidebars
-│   └── pages/                    # Page templates (80+)
-│       ├── public/               # about, contact, forgot/reset password, 403/404/500
-│       ├── shared/               # profile, settings
-│       ├── farmer/               # dashboard, harvests CRUD, offers, pickups, payments, reports
-│       ├── buyer/                # dashboard, demands CRUD, matches, orders, payments, deliveries
-│       ├── transporter/          # dashboard, vehicles CRUD, jobs, routes, earnings
-│       ├── cold_hub/             # dashboard, capacity, check-in/out, temp logs, breaches
-│       ├── cooperative/          # dashboard, farmers CRUD, harvests, aggregate, reports
-│       └── admin/                # 28 pages — users, farmers, buyers, transporters, vehicles,
-│                                 # harvests, demands, routes, jobs, cold hubs, payments,
-│                                 # reports, audit logs, integration logs, system health, settings
-├── static/
-│   ├── css/                      # Modular (8 files)
-│   │   ├── base.css, layout.css, sidebar.css
-│   │   ├── forms.css, tables.css
-│   │   ├── badges.css, buttons.css, dashboard.css
-│   └── js/                       # Modular (11 files)
-│       ├── api.js, auth.js, forms.js
-│       └── pages/                # Per-role: public, farmer, buyer, transporter,
-│                                 # cold_hub, cooperative, admin
-└── infra/nginx/                  # Nginx configuration
-docker-compose.yml                # Multi-service orchestration
+  templates/
+    layouts/          # Role-specific shell layouts
+    partials/         # Shared UI fragments
+    pages/            # Role/public/shared page templates
+  static/
+    css/              # Modular styles + role page styles
+    js/               # API/auth/forms/tables + page scripts
 ```
 
-## Frontend Architecture
+## Multi-Page Route Groups
 
-### Template Inheritance Chain
+- Public: `/`, `/login`, `/register`, `/forgot-password`, `/reset-password`, `/about`, `/contact`
+- Shared authenticated: `/dashboard`, `/profile`, `/settings`, `/notifications`
+- Farmer: `/farmer/*`
+- Buyer: `/buyer/*`
+- Transporter: `/transporter/*`
+- Cold hub: `/cold-hub/*`
+- Cooperative: `/cooperative/*`
+- Admin: `/admin/*`
 
-```
-base.html
-  └── layouts/{role}.html          # Adds sidebar, header, breadcrumb
-       └── pages/{role}/{page}.html  # Page-specific content
-```
+All protected routes enforce authentication and role constraints. Unauthenticated users are redirected to `/login`; role violations return a 403 page.
 
-### Role-Based Access
+## Frontend Design Principles
 
-Each layout includes a role-specific sidebar with server-rendered active state. Web routes are protected by `require_web_role()` dependency that reads JWT from httpOnly cookie:
+- True multi-page architecture (no hidden-div pseudo-routing).
+- Page isolation with dedicated route/template/script responsibilities.
+- Defensive rendering for loading, empty, error, and invalid-data states.
+- Reusable partials for alerts, empty states, form errors, and pagination.
+- Scoped page scripts to avoid cross-module side effects.
 
-- **Public**: landing, about, contact, login, register, forgot-password, reset-password, error pages
-- **Farmer**: dashboard, harvests (list/create/detail), offers, pickups, payments, reports
-- **Buyer**: dashboard, demands (list/create/detail), matches, orders (list/detail), payments, deliveries
-- **Transporter**: dashboard, vehicles (list/create/detail), jobs (list/detail), routes (list/detail), earnings
-- **Cold Hub Operator**: dashboard, capacity, check-in, check-out, temperature logs, breaches
-- **Cooperative Admin**: dashboard, farmers (list/create/detail), harvests, aggregate-harvests, reports
-- **Admin**: dashboard, users, farmers, buyers, transporters, vehicles, harvests, demands, routes, transport-jobs, cold-hubs, payments, reports, audit-logs, integration-logs, system-health, settings
-
-### Auth Flow
-
-1. Login form submits to `/api/v1/auth/login` → JWT returned
-2. `auth.js` stores token in both `localStorage` (for API calls) and httpOnly cookie (for web routes)
-3. Web routes read JWT via `get_web_user()` dependency
-4. Unauthenticated requests to protected routes return 303 redirect to `/login`
-5. Role mismatch returns 403
-
-### CSS Architecture (8 modular files)
-
-| File | Purpose |
-|------|---------|
-| `base.css` | Reset, variables, typography, utilities |
-| `layout.css` | Shell layout, header, responsive breakpoints |
-| `sidebar.css` | Fixed sidebar, nav items, section labels |
-| `forms.css` | Form elements, validation states, form cards |
-| `tables.css` | Data tables, empty states, metrics tables |
-| `badges.css` | Status badges (success, warning, danger, etc.) |
-| `buttons.css` | Button variants (primary, accent, danger, outline) |
-| `dashboard.css` | Stat cards, breadcrumbs, flash messages, mobile nav, detail grids |
-
-## Setup
+## Getting Started
 
 ### Prerequisites
 
 - Python 3.12+
-- PostgreSQL 16 + PostGIS
-- Redis 7
+- PostgreSQL 16+
+- Redis 7+
 
-### Quick Start
+### Local Setup (Non-Docker)
 
 ```bash
-# Clone
 git clone https://github.com/elonmasai7/MavunoRoute.git
 cd MavunoRoute
 
-# Backend setup
 python -m venv .venv
 source .venv/bin/activate
 pip install -r backend/requirements.txt
 
-# Environment
 cp backend/.env.example backend/.env
-# Edit backend/.env with your database URL, secrets, API keys
+# update secrets and connection settings in backend/.env
 
-# Database
+cd backend
 alembic upgrade head
-
-# Start
-uvicorn app.main:app --reload --app-dir backend
-
-# Open
-open http://localhost:8000
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### Docker
+Open:
+- App: http://localhost:8000
+- API Docs: http://localhost:8000/docs
+
+### Docker Compose
 
 ```bash
-docker compose up --build
+docker compose up --build -d
 docker compose exec backend alembic upgrade head
 ```
 
-## Running Tests
+## Testing
+
+Run all tests:
 
 ```bash
-pytest backend/tests -q
+cd backend
+pytest -q
 ```
 
-## Documentation
+Current baseline: **23 passing tests**.
 
-| Doc | Description |
-|-----|-------------|
-| `ARCHITECTURE.md` | System architecture and design decisions |
-| `API_DOCUMENTATION.md` | Complete API reference |
-| `DEPLOYMENT.md` | Production deployment guide |
-| `ENVIRONMENT_VARIABLES.md` | All configurable env vars |
-| `DATABASE_SCHEMA.md` | Entity relationship documentation |
-| `TESTING.md` | Test strategy and patterns |
-| `SECURITY.md` | Authentication, authorization, and security controls |
+## Deployment
 
-## Key Design Decisions
+- See `DEPLOYMENT.md` for production deployment instructions.
+- The repository includes a root `Dockerfile` suitable for Render Docker web service deployment.
 
-- **Modular monolith** with strict bounded contexts — path to extract microservices later without breaking changes.
-- **Deterministic spoilage risk engine** — additive factor blocks with explainable output, ready for data-driven ML upgrade.
-- **UUIDs for public identifiers**, integer PKs for internal consistency, soft deletes where useful.
-- **Provider abstraction** for all external integrations — routing, weather, payments, notifications, storage — swappable without domain logic changes.
-- **In-memory rate limiting** with Redis-backed distributed upgrade path and automatic fallback.
-- **Audit logging** via dependency injection with graceful failure handling.
-- **Test DB** uses same PostgreSQL as development with transactional rollback per test — no mocking the database.
-- **No seeded/dummy runtime data** — every record created through API endpoints; test data lives only in `backend/tests/`.
+## Security and Data Integrity
+
+- JWT access/refresh auth flow.
+- Role-based permission map with endpoint-level enforcement.
+- Security headers and distributed rate limiting.
+- Audit logging for sensitive operations.
+- No seeded or dummy runtime data in application flows.
+
+## Documentation Index
+
+- `ARCHITECTURE.md`
+- `API_DOCUMENTATION.md`
+- `DEPLOYMENT.md`
+- `ENVIRONMENT_VARIABLES.md`
+- `DATABASE_SCHEMA.md`
+- `TESTING.md`
+- `SECURITY.md`
