@@ -1,0 +1,30 @@
+{% extends layout_template %}
+{% block title %}Notifications - MavunoRoute AI{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-header">
+    <h2>Notifications</h2>
+    <button class="btn btn-sm btn-outline" type="button" id="reload-notifications">Refresh</button>
+  </div>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Channel</th>
+          <th>Subject</th>
+          <th>Status</th>
+          <th>Created</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="notifications-list">
+        <tr class="table-empty"><td colspan="5"><p>Loading notifications...</p></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
+
+{% block page_js %}
+  <script src="/static/js/notifications.js"></script>
+{% endblock %}

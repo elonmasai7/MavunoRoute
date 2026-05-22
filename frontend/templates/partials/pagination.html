@@ -1,0 +1,13 @@
+{% if pagination %}
+<nav class="pagination" aria-label="Pagination">
+  <span class="text-muted">Page {{ pagination.page }} of {{ pagination.pages }}</span>
+  <div class="btn-group">
+    {% if pagination.page > 1 %}
+      <a class="btn btn-sm" href="{{ pagination.base_url }}?page={{ pagination.page - 1 }}&per_page={{ pagination.per_page }}">Previous</a>
+    {% endif %}
+    {% if pagination.page < pagination.pages %}
+      <a class="btn btn-sm" href="{{ pagination.base_url }}?page={{ pagination.page + 1 }}&per_page={{ pagination.per_page }}">Next</a>
+    {% endif %}
+  </div>
+</nav>
+{% endif %}

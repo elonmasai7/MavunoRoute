@@ -1,0 +1,13 @@
+{% if user.role == "FARMER" %}
+  {% include "partials/sidebar_farmer.html" %}
+{% elif user.role == "BUYER" %}
+  {% include "partials/sidebar_buyer.html" %}
+{% elif user.role == "TRANSPORTER" %}
+  {% include "partials/sidebar_transporter.html" %}
+{% elif user.role == "COLD_HUB_OPERATOR" %}
+  {% include "partials/sidebar_coldhub.html" %}
+{% elif user.role == "COOPERATIVE_ADMIN" %}
+  {% include "partials/sidebar_cooperative.html" %}
+{% else %}
+  {% include "partials/sidebar_admin.html" %}
+{% endif %}
