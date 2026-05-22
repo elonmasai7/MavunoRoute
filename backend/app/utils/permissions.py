@@ -49,6 +49,7 @@ ROLE_PERMISSIONS: dict[str, set[str]] = {
         "harvests:read",
         "demands:read",
         "reports:read",
+        "notifications:read",
     },
     "FARMER": {
         "farmers:self",
@@ -59,6 +60,9 @@ ROLE_PERMISSIONS: dict[str, set[str]] = {
         "demands:read",
         "matching:read",
         "payments:self",
+        "payments:read",
+        "jobs:read",
+        "reports:read",
         "proofs:read",
         "temperature:read",
         "notifications:read",
@@ -76,6 +80,7 @@ ROLE_PERMISSIONS: dict[str, set[str]] = {
         "proofs:write",
         "temperature:write",
         "payments:self",
+        "payments:read",
         "notifications:read",
         "routes:read",
     },
@@ -88,8 +93,11 @@ ROLE_PERMISSIONS: dict[str, set[str]] = {
         "demands:write",
         "matching:read",
         "payments:self",
+        "payments:read",
         "payments:write",
         "harvests:read",
+        "jobs:read",
+        "routes:read",
         "notifications:read",
         "weather:read",
     },
@@ -101,8 +109,9 @@ ROLE_PERMISSIONS: dict[str, set[str]] = {
         "temperature:write",
         "routes:read",
         "jobs:read",
+        "notifications:read",
     },
-    "FINANCE_PARTNER": {"payments:read", "reports:read"},
+    "FINANCE_PARTNER": {"payments:read", "reports:read", "notifications:read"},
 }
 
 

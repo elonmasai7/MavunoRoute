@@ -17,6 +17,21 @@ ROLE_DASHBOARDS = {
     "FINANCE_PARTNER": "/admin/dashboard",
 }
 
+ROLE_LAYOUTS = {
+    "FARMER": "layouts/farmer.html",
+    "BUYER": "layouts/buyer.html",
+    "TRANSPORTER": "layouts/transporter.html",
+    "COLD_HUB_OPERATOR": "layouts/cold_hub.html",
+    "COOPERATIVE_ADMIN": "layouts/cooperative.html",
+    "SUPER_ADMIN": "layouts/admin.html",
+    "OPS_ADMIN": "layouts/admin.html",
+    "FINANCE_PARTNER": "layouts/admin.html",
+}
+
+
+def _layout_for_user(user: WebUser) -> str:
+    return ROLE_LAYOUTS.get(user.role or "", "layouts/auth.html")
+
 
 @router.get("/dashboard")
 def dashboard_redirect(request: Request):
@@ -37,9 +52,38 @@ def logout(request: Request):
 
 @router.get("/profile", response_class=HTMLResponse)
 def profile_page(request: Request, web_user: WebUser = Depends(require_web_auth)):
-    return templates.TemplateResponse("pages/shared/profile.html", {"request": request, "user": web_user})
+    return templates.TemplateResponse(
+        "pages/shared/profile.html",
+        {
+            "request": request,
+            "user": web_user,
+            "layout_template": _layout_for_user(web_user),
+            "active_page": "profile",
+        },
+    )
 
 
 @router.get("/settings", response_class=HTMLResponse)
 def settings_page(request: Request, web_user: WebUser = Depends(require_web_auth)):
-    return templates.TemplateResponse("pages/shared/settings.html", {"request": request, "user": web_user})
+    return templates.TemplateResponse(
+        "pages/shared/settings.html",
+        {
+            "request": request,
+            "user": web_user,
+            "layout_template": _layout_for_user(web_user),
+            "active_page": "settings",
+        },
+    )
+
+
+@router.get("/notifications", response_class=HTMLResponse)
+def notifications_page(request: Request, web_user: WebUser = Depends(require_web_auth)):
+    return templates.TemplateResponse(
+        "pages/shared/notifications.html",
+        {
+            "request": request,
+            "user": web_user,
+            "layout_template": _layout_for_user(web_user),
+            "active_page": "notifications",
+        },
+    )

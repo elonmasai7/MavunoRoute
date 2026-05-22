@@ -1,12 +1,28 @@
 from uuid import UUID
 
 from fastapi import HTTPException, Request, status
-from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models.user import User
 from app.security import decode_token
+
+
+def _resolve_db_from_request(request: Request) -> tuple[Session, object]:
+    override = request.app.dependency_overrides.get(get_db)
+    provider = override or get_db
+    generator = provider()
+    session = next(generator)
+    return session, generator
+
+
+def _cleanup_db_generator(generator: object) -> None:
+    try:
+        next(generator)
+    except StopIteration:
+        pass
+    except Exception:
+        pass
 
 
 class WebUser:
@@ -55,20 +71,28 @@ def get_web_user(request: Request) -> WebUser:
         return WebUser()
     if payload.get("type") != "access":
         return WebUser()
-    db: Session = next(get_db())
+    subject = payload.get("sub")
+    if not subject:
+        return WebUser()
     try:
-        user = db.get(User, UUID(payload.get("sub")))
+        user_id = UUID(str(subject))
+    except (TypeError, ValueError):
+        return WebUser()
+
+    db, generator = _resolve_db_from_request(request)
+    try:
+        user = db.get(User, user_id)
         if user is None or not user.is_active:
             return WebUser()
         return WebUser(user)
     finally:
-        db.close()
+        _cleanup_db_generator(generator)
 
 
 def require_web_auth(request: Request) -> WebUser:
     user = get_web_user(request)
     if not user.is_authenticated:
-        raise HTTPException(status_code=status.HTTP_303_SEE_OTHER, detail="Authentication required")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication required")
     return user
 
 
@@ -76,8 +100,9 @@ def require_web_role(*roles: str):
     def checker(request: Request) -> WebUser:
         user = get_web_user(request)
         if not user.is_authenticated:
-            raise HTTPException(status_code=status.HTTP_303_SEE_OTHER, detail="Authentication required")
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication required")
         if user.role not in roles:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Insufficient permissions")
         return user
+
     return checker

@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app.web.dependencies import WebUser, get_web_user
 from app.web.utils import templates
@@ -25,12 +25,14 @@ def contact(request: Request, _web_user: WebUser = Depends(get_web_user)):
 @router.get("/login", response_class=HTMLResponse)
 def login_page(request: Request, web_user: WebUser = Depends(get_web_user)):
     if web_user.is_authenticated:
-        return templates.TemplateResponse("login.html", {"request": request})
+        return RedirectResponse(url="/dashboard", status_code=302)
     return templates.TemplateResponse("login.html", {"request": request})
 
 
 @router.get("/register", response_class=HTMLResponse)
-def register_page(request: Request, _web_user: WebUser = Depends(get_web_user)):
+def register_page(request: Request, web_user: WebUser = Depends(get_web_user)):
+    if web_user.is_authenticated:
+        return RedirectResponse(url="/dashboard", status_code=302)
     return templates.TemplateResponse("register.html", {"request": request})
 
 
